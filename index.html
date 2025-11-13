@@ -1,0 +1,134 @@
+<!DOCTYPE html> 
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width , initial-scale=1.0">
+
+<title>نونة روحية - فصل تلمذة</title>
+
+ <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css"> <!--what is rel-->
+
+</head>
+
+<body>
+
+<header>
+<h2>Kirellos George</h2>
+</header>
+
+<section class="hero">
+<img src="فصل_تلميذه-removebg-preview.png" alt="logo" class="logo">
+<h1>فصل تلميذه<br>نونه الروحية</h1>
+<p>ذا الويب سايت مصمم لفصول تلمذة</p>
+
+<button class="main-btn">النوتة</button>
+
+</section>
+
+<section class="form-section">
+
+<div class="row">
+  <span>الاسم :</span>
+  <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
+</div>
+
+
+<div class="date-container">
+<input type="date"> <!--explain this part-->
+<input type="date">
+</div>
+
+<div class="row">
+<span>الإنجيل :</span><!--explain-->
+<labal>yes <input type="checkbox"></label>
+<labal>no <input type="checkbox"></label>
+</div>
+
+<div class="row">
+<span>الاعتراف :</span><!--explain-->
+<labal>yes <input type="checkbox"></label>
+<labal>no <input type="checkbox"></label>
+</div>
+
+<div class="row">
+<span>التناول :</span><!--explain-->
+<labal>yes <input type="checkbox"></label>
+<labal>no <input type="checkbox"></label>
+</div>
+
+<div class="row">
+      <span>الصلاة :</span> <!-- means “prayer” -->
+      <label>Yes <input type="checkbox"></label>
+      <label>No <input type="checkbox"></label>
+    </div>
+
+<div class="row">
+  <span>اختار اشبينك :</span>
+  <select id="teacherSelect">
+    <option value="">اختار اشبينك</option>
+    <option value="استاذ بيشوي كامل">استاذ بيشوي كامل</option>
+    <option value="استاذ ايميل">استاذ ايميل</option>
+    <option value="استاذ جوزيف">استاذ جوزيف</option>
+<option value="طاسوني داليا">طاسوني داليا</option>
+<option value="طاسوني امال">طاسوني امال</option>
+<option value="طاسوني اوديت">طاسوني اوديت</option>
+<option value="طاسوني كريستين">طاسوني كريستين</option>
+
+
+  </select>
+</div>
+
+<button class="submit-btn">إرسال</button>
+</section>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbx15rirQtgf2PETpmoZR8dTMdACVvZlEtMArwSnIXSUDlMCbkBjKLXnFRn3FASMQDva/exec"; // paste the /exec URL
+
+document.querySelector(".submit-btn").addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById("studentName").value;
+  const teacher = document.getElementById("teacherSelect").value;
+  const date = document.querySelector(".date-container input").value;
+
+  const gospel = document.querySelectorAll(".row input[type='checkbox']")[0].checked ? "Yes" : "No";
+  const confession = document.querySelectorAll(".row input[type='checkbox']")[2].checked ? "Yes" : "No";
+  const communion = document.querySelectorAll(".row input[type='checkbox']")[4].checked ? "Yes" : "No";
+  const prayer = document.querySelectorAll(".row input[type='checkbox']")[6].checked ? "Yes" : "No";
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("teacher", teacher);
+  formData.append("date", date);
+  formData.append("gospel", gospel);
+  formData.append("confession", confession);
+  formData.append("communion", communion);
+  formData.append("prayer", prayer);
+
+  try {
+    const res = await fetch(scriptURL, {
+      method: "POST",
+      body: formData
+    });
+
+    const text = await res.text();
+    alert("تم إرسال النوتة بنجاح ✅ (" + text + ")");
+  } catch (err) {
+    alert("حصل خطأ في الإرسال ❌ " + err.message);
+  }
+});
+</script>
+
+
+
+
+</body>
+</html>
+
+
