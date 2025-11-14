@@ -1,6 +1,5 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width , initial-scale=1.0">
@@ -9,133 +8,117 @@
   <link rel="stylesheet" href="style.css">
   <style>
     body { font-family: 'Cairo', sans-serif; }
-    #message {
-      margin-top: 15px;
-      font-weight: bold;
-      color: #333;
-    }
+    #message { margin-top: 15px; font-weight: bold; color: #333; }
     #message.success { color: green; }
     #message.error { color: red; }
     #message.loading { color: orange; }
   </style>
 </head>
-
 <body>
+  <header>
+    <h2>Kirellos George</h2>
+  </header>
 
-<header>
-  <h2>Kirellos George</h2>
-</header>
+  <section class="hero">
+    <img src="فصل_تلميذه-removebg-preview.png" alt="logo" class="logo">
+    <h1>فصل تلميذه<br>نونه الروحية</h1>
+    <p>ذا الويب سايت مصمم لفصول تلمذة</p>
+    <button class="main-btn">النوتة</button>
+  </section>
 
-<section class="hero">
-  <img src="فصل_تلميذه-removebg-preview.png" alt="logo" class="logo">
-  <h1>فصل تلميذه<br>نونه الروحية</h1>
-  <p>ذا الويب سايت مصمم لفصول تلمذة</p>
-  <button class="main-btn">النوتة</button>
-</section>
+  <section class="form-section">
+    <div class="row">
+      <span>الاسم :</span>
+      <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
+    </div>
 
-<section class="form-section">
+    <div class="date-container">
+      <input type="date" id="dateField">
+    </div>
 
-  <div class="row">
-    <span>الاسم :</span>
-    <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
-  </div>
+    <div class="row">
+      <span>الإنجيل :</span>
+      <label>NO <input type="checkbox" id="gospelNo"></label>
+      <label>YES <input type="checkbox" id="gospelYes"></label>
+    </div>
 
-  <div class="date-container">
-    <input type="date">
-    <input type="date">
-  </div>
+    <div class="row">
+      <span>الاعتراف :</span>
+      <label>NO <input type="checkbox" id="confessionNo"></label>
+      <label>YES <input type="checkbox" id="confessionYes"></label>
+    </div>
 
-  <div class="row">
-    <span>الإنجيل :</span>
-    <label>NO <input type="checkbox"></label>
-    <label>YES <input type="checkbox"></label>
-  </div>
+    <div class="row">
+      <span>التناول :</span>
+      <label>NO <input type="checkbox" id="communionNo"></label>
+      <label>YES <input type="checkbox" id="communionYes"></label>
+    </div>
 
-  <div class="row">
-    <span>الاعتراف :</span>
-    <label>NO <input type="checkbox"></label>
-    <label>YES <input type="checkbox"></label>
-  </div>
+    <div class="row">
+      <span>الصلاة :</span>
+      <label>NO <input type="checkbox" id="prayerNo"></label>
+      <label>YES <input type="checkbox" id="prayerYes"></label>
+    </div>
 
-  <div class="row">
-    <span>التناول :</span>
-    <label>NO <input type="checkbox"></label>
-    <label>YES <input type="checkbox"></label>
-  </div>
+    <div class="row">
+      <span>اختار اشبينك :</span>
+      <select id="teacherSelect">
+        <option value="">اختار اشبينك</option>
+        <option value="استاذ بيشوي كامل">استاذ بيشوي كامل</option>
+        <option value="استاذ ايميل">استاذ ايميل</option>
+        <option value="استاذ جوزيف">استاذ جوزيف</option>
+        <option value="طاسوني داليا">طاسوني داليا</option>
+        <option value="طاسوني امال">طاسوني امال</option>
+        <option value="طاسوني اوديت">طاسوني اوديت</option>
+        <option value="طاسوني كريستين">طاسوني كريستين</option>
+      </select>
+    </div>
 
-  <div class="row">
-    <span>الصلاة :</span>
-    <label>Yes <input type="checkbox"></label>
-    <label>No <input type="checkbox"></label>
-  </div>
+    <button class="submit-btn">إرسال</button>
+    <div id="message"></div>
+  </section>
 
-  <div class="row">
-    <span>اختار اشبينك :</span>
-    <select id="teacherSelect">
-      <option value="">اختار اشبينك</option>
-      <option value="استاذ بيشوي كامل">استاذ بيشوي كامل</option>
-      <option value="استاذ ايميل">استاذ ايميل</option>
-      <option value="استاذ جوزيف">استاذ جوزيف</option>
-      <option value="طاسوني داليا">طاسوني داليا</option>
-      <option value="طاسوني امال">طاسوني امال</option>
-      <option value="طاسوني اوديت">طاسوني اوديت</option>
-      <option value="طاسوني كريستين">طاسوني كريستين</option>
-    </select>
-  </div>
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec";
 
-  <button class="submit-btn">إرسال</button>
-  <div id="message"></div>
-</section>
+    document.querySelector(".submit-btn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById("message");
+      msg.textContent = "جاري إرسال النوتة... ⏳";
+      msg.className = "loading";
 
-<script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec";
+      const name = document.getElementById("studentName").value;
+      const teacher = document.getElementById("teacherSelect").value;
+      const date = document.getElementById("dateField").value;
 
-document.querySelector(".submit-btn").addEventListener("click", async (e) => {
-  e.preventDefault();
+      const gospel = document.getElementById("gospelYes").checked ? "Yes" : "No";
+      const confession = document.getElementById("confessionYes").checked ? "Yes" : "No";
+      const communion = document.getElementById("communionYes").checked ? "Yes" : "No";
+      const prayer = document.getElementById("prayerYes").checked ? "Yes" : "No";
 
-  const msg = document.getElementById("message");
-  msg.textContent = "جاري إرسال النوتة... ⏳";
-  msg.className = "loading";
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("teacher", teacher);
+      formData.append("date", date);
+      formData.append("gospel", gospel);
+      formData.append("confession", confession);
+      formData.append("communion", communion);
+      formData.append("prayer", prayer);
 
-  const name = document.getElementById("studentName").value;
-  const teacher = document.getElementById("teacherSelect").value;
-  const date = document.querySelector(".date-container input").value;
-
-  const gospel = document.querySelectorAll(".row input[type='checkbox']")[0].checked ? "Yes" : "No";
-  const confession = document.querySelectorAll(".row input[type='checkbox']")[2].checked ? "Yes" : "No";
-  const communion = document.querySelectorAll(".row input[type='checkbox']")[4].checked ? "Yes" : "No";
-  const prayer = document.querySelectorAll(".row input[type='checkbox']")[6].checked ? "Yes" : "No";
-
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("teacher", teacher);
-  formData.append("date", date);
-  formData.append("gospel", gospel);
-  formData.append("confession", confession);
-  formData.append("communion", communion);
-  formData.append("prayer", prayer);
-
-  try {
-    const res = await fetch(scriptURL, {
-      method: "POST",
-      body: formData
+      try {
+        const res = await fetch(scriptURL, { method: "POST", body: formData });
+        if (res.ok) {
+          msg.textContent = "تم إرسال النوتة بنجاح ✅";
+          msg.className = "success";
+        } else {
+          msg.textContent = "حصل خطأ في الإرسال ❌";
+          msg.className = "error";
+        }
+      } catch (err) {
+        msg.textContent = "حصل خطأ في الإرسال ❌";
+        msg.className = "error";
+      }
     });
-
-    if (res.ok) {
-      msg.textContent = "تم إرسال النوتة بنجاح ✅";
-      msg.className = "success";
-    } else {
-      msg.textContent = "حصل خطأ في الإرسال ❌";
-      msg.className = "error";
-    }
-  } catch (err) {
-    msg.textContent = "حصل خطأ في الإرسال ❌";
-    msg.className = "error";
-  }
-});
-</script>
-
+  </script>
 </body>
 </html>
-
-
