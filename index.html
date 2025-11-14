@@ -1,97 +1,101 @@
 <!DOCTYPE html> 
-
 <html lang="ar" dir="rtl">
 
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width , initial-scale=1.0">
-
-<title>نونة روحية - فصل تلمذة</title>
-
- <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="style.css"> <!--what is rel-->
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width , initial-scale=1.0">
+  <title>نونة روحية - فصل تلمذة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: 'Cairo', sans-serif; }
+    #message {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+    #message.success { color: green; }
+    #message.error { color: red; }
+    #message.loading { color: orange; }
+  </style>
 </head>
 
 <body>
 
 <header>
-<h2>Kirellos George</h2>
+  <h2>Kirellos George</h2>
 </header>
 
 <section class="hero">
-<img src="فصل_تلميذه-removebg-preview.png" alt="logo" class="logo">
-<h1>فصل تلميذه<br>نونه الروحية</h1>
-<p>ذا الويب سايت مصمم لفصول تلمذة</p>
-
-<button class="main-btn">النوتة</button>
-
+  <img src="فصل_تلميذه-removebg-preview.png" alt="logo" class="logo">
+  <h1>فصل تلميذه<br>نونه الروحية</h1>
+  <p>ذا الويب سايت مصمم لفصول تلمذة</p>
+  <button class="main-btn">النوتة</button>
 </section>
 
 <section class="form-section">
 
-<div class="row">
-  <span>الاسم :</span>
-  <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
-</div>
+  <div class="row">
+    <span>الاسم :</span>
+    <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
+  </div>
 
+  <div class="date-container">
+    <input type="date">
+    <input type="date">
+  </div>
 
-<div class="date-container">
-<input type="date"> <!--explain this part-->
-<input type="date">
-</div>
+  <div class="row">
+    <span>الإنجيل :</span>
+    <label>NO <input type="checkbox"></label>
+    <label>YES <input type="checkbox"></label>
+  </div>
 
-<div class="row">
-<span>الإنجيل :</span><!--explain-->
-<labal>NO <input type="checkbox"></label>
-<labal>YES <input type="checkbox"></label>
-</div>
+  <div class="row">
+    <span>الاعتراف :</span>
+    <label>NO <input type="checkbox"></label>
+    <label>YES <input type="checkbox"></label>
+  </div>
 
-<div class="row">
-<span>الاعتراف :</span><!--explain-->
-<labal>NO <input type="checkbox"></label>
-<labal>YES <input type="checkbox"></label>
-</div>
+  <div class="row">
+    <span>التناول :</span>
+    <label>NO <input type="checkbox"></label>
+    <label>YES <input type="checkbox"></label>
+  </div>
 
-<div class="row">
-<span>التناول :</span><!--explain-->
-<labal>NO <input type="checkbox"></label>
-<labal>YES <input type="checkbox"></label>
-</div>
+  <div class="row">
+    <span>الصلاة :</span>
+    <label>Yes <input type="checkbox"></label>
+    <label>No <input type="checkbox"></label>
+  </div>
 
-<div class="row">
-      <span>الصلاة :</span> <!-- means “prayer” -->
-      <label>Yes <input type="checkbox"></label>
-      <label>No <input type="checkbox"></label>
-    </div>
+  <div class="row">
+    <span>اختار اشبينك :</span>
+    <select id="teacherSelect">
+      <option value="">اختار اشبينك</option>
+      <option value="استاذ بيشوي كامل">استاذ بيشوي كامل</option>
+      <option value="استاذ ايميل">استاذ ايميل</option>
+      <option value="استاذ جوزيف">استاذ جوزيف</option>
+      <option value="طاسوني داليا">طاسوني داليا</option>
+      <option value="طاسوني امال">طاسوني امال</option>
+      <option value="طاسوني اوديت">طاسوني اوديت</option>
+      <option value="طاسوني كريستين">طاسوني كريستين</option>
+    </select>
+  </div>
 
-<div class="row">
-  <span>اختار اشبينك :</span>
-  <select id="teacherSelect">
-    <option value="">اختار اشبينك</option>
-    <option value="استاذ بيشوي كامل">استاذ بيشوي كامل</option>
-    <option value="استاذ ايميل">استاذ ايميل</option>
-    <option value="استاذ جوزيف">استاذ جوزيف</option>
-<option value="طاسوني داليا">طاسوني داليا</option>
-<option value="طاسوني امال">طاسوني امال</option>
-<option value="طاسوني اوديت">طاسوني اوديت</option>
-<option value="طاسوني كريستين">طاسوني كريستين</option>
-
-
-  </select>
-</div>
-
-<button class="submit-btn">إرسال</button>
+  <button class="submit-btn">إرسال</button>
+  <div id="message"></div>
 </section>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec"; // paste the /exec URL
+const scriptURL = "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec";
 
 document.querySelector(".submit-btn").addEventListener("click", async (e) => {
   e.preventDefault();
+
+  const msg = document.getElementById("message");
+  msg.textContent = "جاري إرسال النوتة... ⏳";
+  msg.className = "loading";
 
   const name = document.getElementById("studentName").value;
   const teacher = document.getElementById("teacherSelect").value;
@@ -117,23 +121,19 @@ document.querySelector(".submit-btn").addEventListener("click", async (e) => {
       body: formData
     });
 
-    const text = await res.text();
-    alert("تم إرسال النوتة بنجاح ✅ (" + text + ")");
+    if (res.ok) {
+      msg.textContent = "تم إرسال النوتة بنجاح ✅";
+      msg.className = "success";
+    } else {
+      msg.textContent = "حصل خطأ في الإرسال ❌";
+      msg.className = "error";
+    }
   } catch (err) {
-    alert("حصل خطأ في الإرسال ❌ " + err.message);
+    msg.textContent = "حصل خطأ في الإرسال ❌";
+    msg.className = "error";
   }
 });
 </script>
 
-
-
-
 </body>
 </html>
-
-
-
-
-
-
-
