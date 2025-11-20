@@ -86,7 +86,7 @@
  
 <script>
 document.querySelector(".submit-btn").addEventListener("click", () => {
-  // ✅ Collect values from your form
+  // Collect values from form
   const name = document.getElementById("studentName").value;
   const date = document.getElementById("dateField").value;
   const teacher = document.getElementById("teacherSelect").value;
@@ -96,12 +96,12 @@ document.querySelector(".submit-btn").addEventListener("click", () => {
   const communion = document.querySelector('input[name="communion"]:checked')?.value || "";
   const prayer = document.querySelector('input[name="prayer"]:checked')?.value || "";
 
-  // ✅ Show loading message
+  // Show loading message
   const messageBox = document.getElementById("message");
   messageBox.textContent = "جارٍ الإرسال...";
   messageBox.className = "loading";
 
-  // ✅ Send data to Google Apps Script
+  // Send data to Google Apps Script
   fetch("https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec", {
     method: "POST",
     body: new URLSearchParams({
@@ -114,9 +114,9 @@ document.querySelector(".submit-btn").addEventListener("click", () => {
       prayer
     })
   })
-  .then(res => res.json())
+  .then(res => res.text())   // Expect plain text response
   .then(data => {
-    messageBox.textContent = "تم الحفظ بنجاح!";
+    messageBox.textContent = data; // e.g. "تم الحفظ بنجاح"
     messageBox.className = "success";
   })
   .catch(err => {
@@ -134,6 +134,7 @@ document.querySelector(".submit-btn").addEventListener("click", () => {
   
 </body>
 </html>
+
 
 
 
