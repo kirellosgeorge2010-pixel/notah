@@ -86,6 +86,7 @@
  
 <script>
 document.querySelector(".submit-btn").addEventListener("click", () => {
+  // ✅ Collect values from your form
   const name = document.getElementById("studentName").value;
   const date = document.getElementById("dateField").value;
   const teacher = document.getElementById("teacherSelect").value;
@@ -95,6 +96,12 @@ document.querySelector(".submit-btn").addEventListener("click", () => {
   const communion = document.querySelector('input[name="communion"]:checked')?.value || "";
   const prayer = document.querySelector('input[name="prayer"]:checked')?.value || "";
 
+  // ✅ Show loading message
+  const messageBox = document.getElementById("message");
+  messageBox.textContent = "جارٍ الإرسال...";
+  messageBox.className = "loading";
+
+  // ✅ Send data to Google Apps Script
   fetch("https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec", {
     method: "POST",
     body: new URLSearchParams({
@@ -109,12 +116,12 @@ document.querySelector(".submit-btn").addEventListener("click", () => {
   })
   .then(res => res.json())
   .then(data => {
-    document.getElementById("message").textContent = "تم الحفظ بنجاح!";
-    document.getElementById("message").className = "success";
+    messageBox.textContent = "تم الحفظ بنجاح!";
+    messageBox.className = "success";
   })
   .catch(err => {
-    document.getElementById("message").textContent = "خطأ أثناء الإرسال";
-    document.getElementById("message").className = "error";
+    messageBox.textContent = "خطأ أثناء الإرسال";
+    messageBox.className = "error";
     console.error(err);
   });
 });
@@ -123,9 +130,11 @@ document.querySelector(".submit-btn").addEventListener("click", () => {
 
 
 
+
   
 </body>
 </html>
+
 
 
 
