@@ -84,33 +84,48 @@
   </section>
 
   <script>
-   fetch("https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec", {
+<script>
+document.querySelector(".submit-btn").addEventListener("click", () => {
+  const name = document.getElementById("studentName").value;
+  const date = document.getElementById("dateField").value;
+  const teacher = document.getElementById("teacherSelect").value;
+
+  const gospel = document.querySelector('input[name="gospel"]:checked')?.value || "";
+  const confession = document.querySelector('input[name="confession"]:checked')?.value || "";
+  const communion = document.querySelector('input[name="communion"]:checked')?.value || "";
+  const prayer = document.querySelector('input[name="prayer"]:checked')?.value || "";
+
+  fetch("https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec", {
     method: "POST",
     body: new URLSearchParams({
-       const name = document.getElementById("name").value;
-const date = document.getElementById("date").value;   // ← THIS FIXES THE ERROR
-const teacher = document.getElementById("teacher").value;
-
-const gospel = document.getElementById("gospel").checked ? "نعم" : "لا";
-const confession = document.getElementById("confession").checked ? "نعم" : "لا";
-const communion = document.getElementById("communion").checked ? "نعم" : "لا";
-const prayer = document.getElementById("prayer").checked ? "نعم" : "لا";
-
+      name,
+      date,
+      teacher,
+      gospel,
+      confession,
+      communion,
+      prayer
     })
-})
-.then(res => res.json())
-.then(data => {
-    alert("تم الحفظ بنجاح!");
-})
-.catch(err => {
-    alert("خطأ أثناء الإرسال");
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("message").textContent = "تم الحفظ بنجاح!";
+    document.getElementById("message").className = "success";
+  })
+  .catch(err => {
+    document.getElementById("message").textContent = "خطأ أثناء الإرسال";
+    document.getElementById("message").className = "error";
     console.error(err);
+  });
 });
+</script>
+
 
 
   </script>
 </body>
 </html>
+
 
 
 
