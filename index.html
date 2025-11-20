@@ -36,32 +36,35 @@
       <input type="date" id="dateField">
     </div>
 
+    <!-- الإنجيل -->
     <div class="row">
-  <span>الإنجيل :</span>
-  <label>NO <input type="radio" name="gospel" value="No"></label>
-  <label>YES <input type="radio" name="gospel" value="Yes"></label>
-</div>
+      <span>الإنجيل :</span>
+      <label>NO <input type="radio" name="gospel" value="No"></label>
+      <label>YES <input type="radio" name="gospel" value="Yes"></label>
+    </div>
 
+    <!-- الاعتراف -->
     <div class="row">
-  <span>الاعتراف :</span>
-  <label>NO <input type="radio" name="confession" value="No"></label>
-  <label>YES <input type="radio" name="confession" value="Yes"></label>
-</div>
+      <span>الاعتراف :</span>
+      <label>NO <input type="radio" name="confession" value="No"></label>
+      <label>YES <input type="radio" name="confession" value="Yes"></label>
+    </div>
 
-
+    <!-- التناول -->
     <div class="row">
-  <span>التناول :</span>
-  <label>NO <input type="radio" name="communion" value="No"></label>
-  <label>YES <input type="radio" name="communion" value="Yes"></label>
-</div>
+      <span>التناول :</span>
+      <label>NO <input type="radio" name="communion" value="No"></label>
+      <label>YES <input type="radio" name="communion" value="Yes"></label>
+    </div>
 
-
+    <!-- الصلاة -->
     <div class="row">
-  <span>الصلاة :</span>
-  <label>NO <input type="radio" name="prayer" value="No"></label>
-  <label>YES <input type="radio" name="prayer" value="Yes"></label>
-</div>
+      <span>الصلاة :</span>
+      <label>NO <input type="radio" name="prayer" value="No"></label>
+      <label>YES <input type="radio" name="prayer" value="Yes"></label>
+    </div>
 
+    <!-- اختيار المربي -->
     <div class="row">
       <span>اختار اشبينك :</span>
       <select id="teacherSelect">
@@ -93,10 +96,11 @@
       const teacher = document.getElementById("teacherSelect").value;
       const date = document.getElementById("dateField").value;
 
-      const gospel = document.getElementById("gospelYes").checked ? "Yes" : "No";
-      const confession = document.getElementById("confessionYes").checked ? "Yes" : "No";
-      const communion = document.getElementById("communionYes").checked ? "Yes" : "No";
-      const prayer = document.getElementById("prayerYes").checked ? "Yes" : "No";
+      // Get selected radio values
+      const gospel = document.querySelector('input[name="gospel"]:checked')?.value || "";
+      const confession = document.querySelector('input[name="confession"]:checked')?.value || "";
+      const communion = document.querySelector('input[name="communion"]:checked')?.value || "";
+      const prayer = document.querySelector('input[name="prayer"]:checked')?.value || "";
 
       const formData = new FormData();
       formData.append("name", name);
@@ -124,4 +128,3 @@
   </script>
 </body>
 </html>
-
