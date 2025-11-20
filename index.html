@@ -85,8 +85,7 @@
 
  
 <script>
-document.querySelector(".submit-btn").addEventListener("click", () => {
-  // Collect values from form
+document.querySelector(".submit-btn").addEventListener("click", async () => {
   const name = document.getElementById("studentName").value;
   const date = document.getElementById("dateField").value;
   const teacher = document.getElementById("teacherSelect").value;
@@ -96,36 +95,34 @@ document.querySelector(".submit-btn").addEventListener("click", () => {
   const communion = document.querySelector('input[name="communion"]:checked')?.value || "";
   const prayer = document.querySelector('input[name="prayer"]:checked')?.value || "";
 
-  // Show loading message
   const messageBox = document.getElementById("message");
   messageBox.textContent = "جارٍ الإرسال...";
   messageBox.className = "loading";
 
-  // Send data to Google Apps Script
-  fetch("https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec", {
-    method: "POST",
-    body: new URLSearchParams({
-      name,
-      date,
-      teacher,
-      gospel,
-      confession,
-      communion,
-      prayer
-    })
-  })
-  .then(res => res.text())   // Expect plain text response
-  .then(data => {
-    messageBox.textContent = data; // e.g. "تم الحفظ بنجاح"
-    messageBox.className = "success";
-  })
-  .catch(err => {
+  try {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec", {
+      method: "POST",
+      body: new URLSearchParams({ name, date, teacher, gospel, confession, communion, prayer })
+    });
+
+    const contentType = res.headers.get("content-type") || "";
+    if (contentType.includes("application/json")) {
+      const data = await res.json();
+      messageBox.textContent = data.message || "تم الحفظ بنجاح";
+      messageBox.className = "success";
+    } else {
+      const text = await res.text();
+      messageBox.textContent = text || "تم الحفظ بنجاح";
+      messageBox.className = "success";
+    }
+  } catch (err) {
     messageBox.textContent = "خطأ أثناء الإرسال";
     messageBox.className = "error";
     console.error(err);
-  });
+  }
 });
 </script>
+
 
 
 
@@ -134,6 +131,7 @@ document.querySelector(".submit-btn").addEventListener("click", () => {
   
 </body>
 </html>
+
 
 
 
