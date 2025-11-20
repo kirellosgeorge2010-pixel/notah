@@ -84,47 +84,44 @@
   </section>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec";
+    const scriptURL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 
-    document.querySelector(".submit-btn").addEventListener("click", async (e) => {
-      e.preventDefault();
-      const msg = document.getElementById("message");
-      msg.textContent = "جاري إرسال النوتة... ⏳";
-      msg.className = "loading";
+document.querySelector(".submit-btn").addEventListener("click", async (e) => {
+  e.preventDefault();
 
-      const name = document.getElementById("studentName").value;
-      const teacher = document.getElementById("teacherSelect").value;
-      const date = document.getElementById("dateField").value;
+  const msg = document.getElementById("message");
+  msg.textContent = "جاري إرسال النوتة... ⏳";
+  msg.className = "loading";
 
-      // Get selected radio values
-      const gospel = document.querySelector('input[name="gospel"]:checked')?.value || "";
-      const confession = document.querySelector('input[name="confession"]:checked')?.value || "";
-      const communion = document.querySelector('input[name="communion"]:checked')?.value || "";
-      const prayer = document.querySelector('input[name="prayer"]:checked')?.value || "";
+  const name = document.getElementById("studentName").value;
+  const teacher = document.getElementById("teacherSelect").value;
+  const date = document.getElementById("dateField").value;
 
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("teacher", teacher);
-      formData.append("date", date);
-      formData.append("gospel", gospel);
-      formData.append("confession", confession);
-      formData.append("communion", communion);
-      formData.append("prayer", prayer);
+  const gospel = document.querySelector('input[name="gospel"]:checked')?.value || "";
+  const confession = document.querySelector('input[name="confession"]:checked')?.value || "";
+  const communion = document.querySelector('input[name="communion"]:checked')?.value || "";
+  const prayer = document.querySelector('input[name="prayer"]:checked')?.value || "";
 
-      try {
-        const res = await fetch(scriptURL, { method: "POST", body: formData });
-        if (res.ok) {
-          msg.textContent = "تم إرسال النوتة بنجاح ✅";
-          msg.className = "success";
-        } else {
-          msg.textContent = "حصل خطأ في الإرسال ❌";
-          msg.className = "error";
-        }
-      } catch (err) {
-        msg.textContent = "حصل خطأ في الإرسال ❌";
-        msg.className = "error";
-      }
-    });
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("teacher", teacher);
+  formData.append("date", date);
+  formData.append("gospel", gospel);
+  formData.append("confession", confession);
+  formData.append("communion", communion);
+  formData.append("prayer", prayer);
+
+  try {
+    const res = await fetch(scriptURL, { method: "POST", body: formData });
+    msg.textContent = res.ok ? "تم إرسال النوتة بنجاح ✅" : "حصل خطأ في الإرسال ❌";
+    msg.className = res.ok ? "success" : "error";
+  } catch {
+    msg.textContent = "حصل خطأ في الإرسال ❌";
+    msg.className = "error";
+  }
+});
+
   </script>
 </body>
 </html>
+
