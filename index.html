@@ -87,13 +87,15 @@
    fetch("https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec", {
     method: "POST",
     body: new URLSearchParams({
-        name: name,
-        date: date,
-        gospel: gospel,
-        confession: confession,
-        communion: communion,
-        prayer: prayer,
-        teacher: teacher
+       const name = document.getElementById("name").value;
+const date = document.getElementById("date").value;   // ← THIS FIXES THE ERROR
+const teacher = document.getElementById("teacher").value;
+
+const gospel = document.getElementById("gospel").checked ? "نعم" : "لا";
+const confession = document.getElementById("confession").checked ? "نعم" : "لا";
+const communion = document.getElementById("communion").checked ? "نعم" : "لا";
+const prayer = document.getElementById("prayer").checked ? "نعم" : "لا";
+
     })
 })
 .then(res => res.json())
@@ -109,6 +111,7 @@
   </script>
 </body>
 </html>
+
 
 
 
