@@ -1,123 +1,172 @@
+/* 1. RESET & FONTS */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Cairo", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Cairo", sans-serif;
 }
 
+/* 2. BODY BACKGROUND (Cream) */
 body {
-  background: linear-gradient(to bottom, #f3e9f1, #e6d3e6);
-  text-align: center;
+    background: #f0e6d2; /* Cream color */
+    text-align: center;
+    color: #4a2225; /* Dark brown text */
 }
 
-/* Header */
+/* 3. HEADER (Dark Brown with Curve) */
 header {
-  background-color: #800000;
-  color: white;
-  padding: 20px;
-  font-size: 26px;
-  font-weight: bold;
-  border-bottom: 4px solid #d4af37;
+    background-color: #4a2225; /* Dark Brown */
+    color: #cf9f3e; /* Gold text */
+    padding: 20px 15px 50px 15px; /* Extra padding for curve effect */
+    font-size: 22px;
+    font-weight: bold;
+    /* This creates the curved bottom shape */
+    border-bottom-left-radius: 50% 40px;
+    border-bottom-right-radius: 50% 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
 }
 
-/* Hero Section */
+/* Optional: Add crosses next to title if desired */
+header h2::before, header h2::after {
+    content: "✝"; 
+    margin: 0 10px;
+    font-size: 1.2em;
+    vertical-align: middle;
+}
+
+/* 4. HERO SECTION */
 .hero {
-  padding: 20px;
-}
-
-.logo {
-  width: 250px;
-  margin-bottom: 10px;
+    padding: 20px;
 }
 
 .hero h1 {
-  font-size: 28px;
-  color: #800000;
-  margin-bottom: 10px;
+    font-size: 2.5rem;
+    color: #4a2225;
+    margin-bottom: 10px;
 }
 
 .hero p {
-  font-size: 18px;
-  color: #333;
+    color: #6e4b3a;
+    font-weight: bold;
 }
 
-/* Main Button */
+.logo {
+    width: 250px;
+    display: block;
+    margin: 0 auto 10px auto;
+}
+
+/* 5. TOP BUTTON (The Note Button) */
 .main-btn {
-  background: #d4af37;
-  color: white;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 30px;
-  margin-top: 15px;
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: bold;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    background: #cf9f3e; /* Gold */
+    color: #4a2225;
+    border: 2px solid #4a2225;
+    padding: 10px 35px;
+    border-radius: 25px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-/* Form Section */
+/* 6. FORM SECTION (The Dark Brown Box at bottom) */
 .form-section {
-  background: #fff;
-  padding: 30px;
-  margin-top: 30px;
-  border-radius: 30px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background: #4a2225; /* Dark Brown Box */
+    padding: 40px 20px;
+    margin-top: 30px;
+    border-radius: 30px 30px 0 0; /* Rounded top corners only */
+    min-height: 400px;
+    color: white;
 }
 
-/* Date Input */
+/* 7. DATE FIELD */
 .date-container {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
 }
 
 .date-container input {
-  padding: 10px;
-  background: #800000;
-  color: white;
-  border: none;
-  border-radius: 10px;
+    padding: 12px;
+    background: #cf9f3e; /* Gold background */
+    color: #4a2225;
+    border: 2px solid #cf9f3e;
+    border-radius: 50px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 16px;
+    outline: none;
 }
 
-/* Form Rows */
+/* 8. ROWS (The Gold Bars) */
 .row {
-  background: #d4af37;
-  padding: 15px;
-  margin: 12px 0;
-  border-radius: 12px;
-  color: white;
-  font-size: 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    background: #cf9f3e; /* Gold Bar */
+    padding: 10px 20px;
+    margin: 15px 0;
+    border-radius: 50px; /* Fully rounded like pill */
+    color: #4a2225; /* Dark brown text label */
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
 }
 
-.row input[type="text"],
-.row select {
-  background: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 10px;
-  width: 60%;
-  font-size: 16px;
-  color: #333;
+/* 9. INPUTS INSIDE THE BARS (White Pills) */
+.row input[type="text"], .row select {
+    background: #fff; /* White input */
+    border: none;
+    border-radius: 25px;
+    padding: 8px 15px;
+    width: 60%;
+    font-size: 16px;
+    color: #333;
+    outline: none;
 }
 
-/* Submit Button */
+/* Radio buttons container adjustment */
+.row div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.row label {
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 10. SUBMIT BUTTON */
 .submit-btn {
-  background: #800000;
-  color: white;
-  border: none;
-  padding: 14px 45px;
-  border-radius: 30px;
-  margin-top: 20px;
-  cursor: pointer;
-  font-size: 28px;
-  font-weight: bold;
-  transition: 0.3s;
+    background: #f0e6d2; /* Cream button */
+    color: #4a2225;
+    border: 4px solid #cf9f3e;
+    padding: 10px 50px;
+    border-radius: 50px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 5px 0 #cf9f3e;
 }
 
 .submit-btn:hover {
-  background: #a00000;
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #cf9f3e;
 }
+
+.submit-btn:active {
+    transform: translateY(5px);
+    box-shadow: none;
+}
+
+/* 11. MESSAGES */
+#message { margin-top: 15px; font-weight: bold; color: #fff; }
+#message.success { color: #cf9f3e; }
+#message.error { color: #ff6b6b; }
+#message.loading { color: #cf9f3e; }
