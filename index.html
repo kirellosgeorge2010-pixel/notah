@@ -5,26 +5,19 @@
   <meta name="viewport" content="width=device-width , initial-scale=1.0">
   <title>نونة روحية - فصل تلمذة</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
   <style>
-    body { font-family: 'Cairo', sans-serif; }
+    body { font-family: 'Cairo', sans-serif; margin: 20px; }
+    .row { margin: 10px 0; }
     #message { margin-top: 15px; font-weight: bold; color: #333; }
     #message.success { color: green; }
     #message.error { color: red; }
     #message.loading { color: orange; }
+    button { padding: 10px 20px; font-size: 18px; }
   </style>
 </head>
 <body>
-  <header>
-    <h2>Kirellos George</h2>
-  </header>
 
-  <section class="hero">
-    <img src="Screenshot_2025-11-26_201754-removebg-preview.png" alt="logo" class="logo">
-    <h1>فصل تلميذه<br>نونه الروحية</h1>
-    <p>ذا الويب سايت مصمم لفصول تلمذة</p>
-    <button class="main-btn">النوتة</button>
-  </section>
+  <h2>Kirellos George</h2>
 
   <section class="form-section">
     <div class="row">
@@ -32,50 +25,53 @@
       <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
     </div>
 
-    <div class="date-container">
+    <div class="row">
+      <span>التاريخ :</span>
       <input type="date" id="dateField">
     </div>
 
-    <!-- الإنجيل -->
     <div class="row">
       <span>الإنجيل :</span>
       <label>NO <input type="radio" name="gospel" value="No"></label>
       <label>YES <input type="radio" name="gospel" value="Yes"></label>
     </div>
 
-    <!-- الاعتراف -->
     <div class="row">
       <span>الاعتراف :</span>
       <label>NO <input type="radio" name="confession" value="No"></label>
       <label>YES <input type="radio" name="confession" value="Yes"></label>
     </div>
 
-    <!-- التناول -->
     <div class="row">
       <span>التناول :</span>
       <label>NO <input type="radio" name="communion" value="No"></label>
       <label>YES <input type="radio" name="communion" value="Yes"></label>
     </div>
 
-    <!-- الصلاة -->
     <div class="row">
       <span>الصلاة :</span>
       <label>NO <input type="radio" name="prayer" value="No"></label>
       <label>YES <input type="radio" name="prayer" value="Yes"></label>
     </div>
 
-    <!-- اختيار المربي -->
     <div class="row">
       <span>اختار اشبينك :</span>
       <select id="teacherSelect">
         <option value="">اختار اشبينك</option>
+
+        <!-- الأساتذة -->
         <option value="استاذ بيشوي كامل">استاذ بيشوي كامل</option>
         <option value="استاذ ايميل">استاذ ايميل</option>
         <option value="استاذ جوزيف">استاذ جوزيف</option>
+        <option value="استاذ بيشوي صبري">استاذ بيشوي صبري</option>
+
+        <!-- الطاسونات -->
         <option value="طاسوني داليا">طاسوني داليا</option>
         <option value="طاسوني امال">طاسوني امال</option>
         <option value="طاسوني اوديت">طاسوني اوديت</option>
         <option value="طاسوني كريستين">طاسوني كريستين</option>
+        <option value="طاسوني ميرنا">طاسوني ميرنا</option>
+        <option value="طاسوني اولفت">طاسوني اولفت</option>
       </select>
     </div>
 
@@ -83,10 +79,9 @@
     <div id="message"></div>
   </section>
 
- 
 <script>
 document.querySelector(".submit-btn").addEventListener("click", async () => {
-  const name = document.getElementById("studentName").value;
+  const name = document.getElementById("studentName").value.trim();
   const date = document.getElementById("dateField").value;
   const teacher = document.getElementById("teacherSelect").value;
 
@@ -95,9 +90,16 @@ document.querySelector(".submit-btn").addEventListener("click", async () => {
   const communion = document.querySelector('input[name="communion"]:checked')?.value || "";
   const prayer = document.querySelector('input[name="prayer"]:checked')?.value || "";
 
-  const messageBox = document.getElementById("message");
-  messageBox.textContent = "جارٍ الإرسال...";
-  messageBox.className = "loading";
+  const msg = document.getElementById("message");
+
+  if (!name || !date || !teacher) {
+    msg.textContent = "من فضلك املأ كل البيانات";
+    msg.className = "error";
+    return;
+  }
+
+  msg.textContent = "جارٍ الإرسال...";
+  msg.className = "loading";
 
   try {
     const res = await fetch("https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec", {
@@ -105,39 +107,16 @@ document.querySelector(".submit-btn").addEventListener("click", async () => {
       body: new URLSearchParams({ name, date, teacher, gospel, confession, communion, prayer })
     });
 
-    const contentType = res.headers.get("content-type") || "";
-    if (contentType.includes("application/json")) {
-      const data = await res.json();
-      messageBox.textContent = data.message || "تم الحفظ بنجاح";
-      messageBox.className = "success";
-    } else {
-      const text = await res.text();
-      messageBox.textContent = text || "تم الحفظ بنجاح";
-      messageBox.className = "success";
-    }
-  } catch (err) {
-    messageBox.textContent = "خطأ أثناء الإرسال";
-    messageBox.className = "error";
-    console.error(err);
+    const text = await res.text();
+    msg.textContent = text.includes("تم") ? "تم الحفظ بنجاح" : text;
+    msg.className = "success";
+  } catch (error) {
+    msg.textContent = "خطأ أثناء الإرسال";
+    msg.className = "error";
+    console.error(error);
   }
 });
 </script>
 
-
-
-
-
-
-  
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
