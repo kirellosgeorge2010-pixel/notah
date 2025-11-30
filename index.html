@@ -99,16 +99,42 @@
 
 <script>
 document.querySelector(".submit-btn").addEventListener("click", async () => {
-  const name = document.getElementById("studentName").value;
+  const name = document.getElementById("studentName").value.trim();
   const date = document.getElementById("dateField").value;
   const teacher = document.getElementById("teacherSelect").value;
 
-  const gospel = document.querySelector('input[name="gospel"]:checked')?.value || "";
-  const confession = document.querySelector('input[name="confession"]:checked')?.value || "";
-  const communion = document.querySelector('input[name="communion"]:checked')?.value || "";
-  const prayer = document.querySelector('input[name="prayer"]:checked')?.value || "";
+  const gospel = document.querySelector('input[name="gospel"]:checked')?.value;
+  const confession = document.querySelector('input[name="confession"]:checked')?.value;
+  const communion = document.querySelector('input[name="communion"]:checked')?.value;
+  const prayer = document.querySelector('input[name="prayer"]:checked')?.value;
 
   const messageBox = document.getElementById("message");
+
+  // ===============================  
+  // 🔥 (1) التحقق من أن كل الحقول إجبارية
+  // ===============================  
+  if (!name) {
+    messageBox.textContent = "❌ من فضلك اكتب الاسم";
+    messageBox.className = "error";
+    return;
+  }
+  if (!date) {
+    messageBox.textContent = "❌ من فضلك اختر التاريخ";
+    messageBox.className = "error";
+    return;
+  }
+  if (!teacher) {
+    messageBox.textContent = "❌ من فضلك اختر إشبينك";
+    messageBox.className = "error";
+    return;
+  }
+  if (!gospel || !confession || !communion || !prayer) {
+    messageBox.textContent = "❌ من فضلك اختر (نعم/لا) في كل الخانات";
+    messageBox.className = "error";
+    return;
+  }
+
+  // لو كل البيانات تمام ↓↓↓
   messageBox.textContent = "جارٍ الإرسال...";
   messageBox.className = "loading";
 
@@ -117,22 +143,31 @@ document.querySelector(".submit-btn").addEventListener("click", async () => {
       "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec",
       {
         method: "POST",
-        body: new URLSearchParams({ name, date, teacher, gospel, confession, communion, prayer })
+        body: new URLSearchParams({
+          name,
+          date,
+          teacher,
+          gospel,
+          confession,
+          communion,
+          prayer
+        })
       }
     );
 
     const text = await res.text();
-
-    messageBox.textContent = text || "تم الحفظ بنجاح";
+    messageBox.textContent = text;
     messageBox.className = "success";
 
   } catch (err) {
-    messageBox.textContent = "حدث خطأ. حاول مرة أخرى";
+    messageBox.textContent = "❌ حدث خطأ أثناء الإرسال";
     messageBox.className = "error";
   }
 });
 </script>
 
+
 </body>
 </html>
+
 
