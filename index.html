@@ -1,174 +1,179 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نونة روحية - فصل تلمذة</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نونة روحية - فصل تلمذة</title>
 
-  <!-- تحميل الخط -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
 
-  <!-- ربط ملف التصميم -->
-  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
-  <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-    }
-    #message {
-      margin-top: 15px;
-      font-weight: bold;
-      color: #333;
-    }
-    #message.success { color: green; }
-    #message.error { color: red; }
-    #message.loading { color: orange; }
-  </style>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+    #message {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+    #message.success { color: green; }
+    #message.error { color: red; }
+    #message.loading { color: orange; }
+  </style>
 </head>
 
 <body>
 
-  <header>
-    <h2>Kirellos George</h2>
-  </header>
+  <header>
+    <h2>Kirellos George</h2>
+  </header>
 
-  <section class="hero">
-    <img src="Screenshot_2025-11-26_201754-removebg-preview.png" alt="logo" class="logo">
-    <h1>فصل تلميذه<br>نونه الروحية</h1>
-    <p>ذا الويب سايت مصمم لفصول تلمذة</p>
-    <button class="main-btn">النوتة</button>
-  </section>
+  <section class="hero">
+    <img src="Screenshot_2025-11-26_201754-removebg-preview.png" alt="logo" class="logo">
+    <h1>فصل تلميذه<br>نونه الروحية</h1>
+    <p>ذا الويب سايت مصمم لفصول تلمذة</p>
+    <button class="main-btn">النوتة</button>
+  </section>
 
-  <section class="form-section">
+  <section class="form-section">
 
-    <div class="row">
-      <span>الاسم :</span>
-      <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
-    </div>
+    <div class="row">
+      <span>الاسم :</span>
+      <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
+    </div>
 
-    <div class="date-container">
-      <input type="date" id="dateField">
-    </div>
+    <div class="date-container">
+      <input type="date" id="dateField">
+    </div>
 
-    <div class="row">
-      <span>الإنجيل :</span>
-      <label>NO <input type="radio" name="gospel" value="No"></label>
-      <label>YES <input type="radio" name="gospel" value="Yes"></label>
-    </div>
+    <div class="row">
+      <span>الإنجيل :</span>
+      <label>NO <input type="radio" name="gospel" value="No"></label>
+      <label>YES <input type="radio" name="gospel" value="Yes"></label>
+    </div>
 
-    <div class="row">
-      <span>الاعتراف :</span>
-      <label>NO <input type="radio" name="confession" value="No"></label>
-      <label>YES <input type="radio" name="confession" value="Yes"></label>
-    </div>
+    <div class="row">
+      <span>الاعتراف :</span>
+      <label>NO <input type="radio" name="confession" value="No"></label>
+      <label>YES <input type="radio" name="confession" value="Yes"></label>
+    </div>
 
-    <div class="row">
-      <span>التناول :</span>
-      <label>NO <input type="radio" name="communion" value="No"></label>
-      <label>YES <input type="radio" name="communion" value="Yes"></label>
-    </div>
+    <div class="row">
+      <span>التناول :</span>
+      <label>NO <input type="radio" name="communion" value="No"></label>
+      <label>YES <input type="radio" name="communion" value="Yes"></label>
+    </div>
 
-    <div class="row">
-      <span>الصلاة :</span>
-      <label>NO <input type="radio" name="prayer" value="No"></label>
-      <label>YES <input type="radio" name="prayer" value="Yes"></label>
-    </div>
+        <div class="row">
+      <span>توقيت القراءة/الصلاة :</span>
+      <label>باكر <input type="checkbox" name="readingTime" value="باكر"></label>
+      <label>الغروب <input type="checkbox" name="readingTime" value="الغروب"></label>
+      <label>النوم <input type="checkbox" name="readingTime" value="النوم"></label>
+    </div>
 
-    <div class="row">
-      <span>اختار اشبينك :</span>
-      <select id="teacherSelect">
-        <option value="">اختار اشبينك</option>
-        <option value="استاذ بيشوي كامل">استاذ بيشوي كامل</option>
-        <option value="استاذ ايميل">استاذ ايميل</option>
-        <option value="استاذ جوزيف">استاذ جوزيف</option>
-        <option value="استاذ بيشوي صبري">استاذ بيشوي صبري</option>
-        <option value="طاسوني ميرنا">طاسوني ميرنا</option>
-        <option value="طاسوني اولفت">طاسوني اولفت</option>
-        <option value="طاسوني داليا">طاسوني داليا</option>
-        <option value="طاسوني امال">طاسوني امال</option>
-        <option value="طاسوني اوديت">طاسوني اوديت</option>
-        <option value="طاسوني كريستين">طاسوني كريستين</option>
-      </select>
-    </div>
+    <div class="row">
+      <span>اختار اشبينك :</span>
+      <select id="teacherSelect">
+        <option value="">اختار اشبينك</option>
+        <option value="استاذ بيشوي كامل">استاذ بيشوي كامل</option>
+        <option value="استاذ ايميل">استاذ ايميل</option>
+        <option value="استاذ جوزيف">استاذ جوزيف</option>
+        <option value="استاذ بيشوي صبري">استاذ بيشوي صبري</option>
+        <option value="طاسوني ميرنا">طاسوني ميرنا</option>
+        <option value="طاسوني اولفت">طاسوني اولفت</option>
+        <option value="طاسوني داليا">طاسوني داليا</option>
+        <option value="طاسوني امال">طاسوني امال</option>
+        <option value="طاسوني اوديت">طاسوني اوديت</option>
+        <option value="طاسوني كريستين">طاسوني كريستين</option>
+      </select>
+    </div>
 
-    <button class="submit-btn">إرسال</button>
-    <div id="message"></div>
+    <button class="submit-btn">إرسال</button>
+    <div id="message"></div>
 
-  </section>
+  </section>
 
 
 <script>
 document.querySelector(".submit-btn").addEventListener("click", async () => {
-  const name = document.getElementById("studentName").value.trim();
-  const date = document.getElementById("dateField").value;
-  const teacher = document.getElementById("teacherSelect").value;
+  const name = document.getElementById("studentName").value.trim();
+  const date = document.getElementById("dateField").value;
+  const teacher = document.getElementById("teacherSelect").value;
 
-  const gospel = document.querySelector('input[name="gospel"]:checked')?.value;
-  const confession = document.querySelector('input[name="confession"]:checked')?.value;
-  const communion = document.querySelector('input[name="communion"]:checked')?.value;
-  const prayer = document.querySelector('input[name="prayer"]:checked')?.value;
+  const gospel = document.querySelector('input[name="gospel"]:checked')?.value;
+  const confession = document.querySelector('input[name="confession"]:checked')?.value;
+  const communion = document.querySelector('input[name="communion"]:checked')?.value;
+  
+  // ✅ الكود الجديد لجمع الخيارات المتعددة (باكر, الغروب, النوم)
+  const selectedTimes = Array.from(document.querySelectorAll('input[name="readingTime"]:checked'))
+    .map(checkbox => checkbox.value)
+    .join(", ");
+  
+  // نستخدم المتغير "prayer" للحفاظ على تسلسل الإرسال، لكن قيمته هي الخيارات المجمعة
+  const prayer = selectedTimes || "لم يتم الاختيار"; 
 
-  const messageBox = document.getElementById("message");
+  const messageBox = document.getElementById("message");
 
-  // ===============================  
-  // 🔥 (1) التحقق من أن كل الحقول إجبارية
-  // ===============================  
-  if (!name) {
-    messageBox.textContent = "❌ من فضلك اكتب الاسم";
-    messageBox.className = "error";
-    return;
-  }
-  if (!date) {
-    messageBox.textContent = "❌ من فضلك اختر التاريخ";
-    messageBox.className = "error";
-    return;
-  }
-  if (!teacher) {
-    messageBox.textContent = "❌ من فضلك اختر إشبينك";
-    messageBox.className = "error";
-    return;
-  }
-  if (!gospel || !confession || !communion || !prayer) {
-    messageBox.textContent = "❌ من فضلك اختر (نعم/لا) في كل الخانات";
-    messageBox.className = "error";
-    return;
-  }
+  // ===============================  
+  // 🔥 (1) التحقق من أن كل الحقول إجبارية
+  // ===============================  
+  if (!name) {
+    messageBox.textContent = "❌ من فضلك اكتب الاسم";
+    messageBox.className = "error";
+    return;
+  }
+  if (!date) {
+    messageBox.textContent = "❌ من فضلك اختر التاريخ";
+    messageBox.className = "error";
+    return;
+  }
+  if (!teacher) {
+    messageBox.textContent = "❌ من فضلك اختر إشبينك";
+    messageBox.className = "error";
+    return;
+  }
+  
+  // ✅ التحقق من الخيارات الثنائية والخيارات المتعددة الجديدة
+  if (!gospel || !confession || !communion || prayer === "لم يتم الاختيار") {
+    messageBox.textContent = "❌ من فضلك اختر (نعم/لا) في الإنجيل/الاعتراف/التناول واختر توقيت القراءة/الصلاة";
+    messageBox.className = "error";
+    return;
+  }
 
-  // لو كل البيانات تمام ↓↓↓
-  messageBox.textContent = "جارٍ الإرسال...";
-  messageBox.className = "loading";
+  // لو كل البيانات تمام ↓↓↓
+  messageBox.textContent = "جارٍ الإرسال...";
+  messageBox.className = "loading";
 
-  try {
-    const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec",
-      {
-        method: "POST",
-        body: new URLSearchParams({
-          name,
-          date,
-          teacher,
-          gospel,
-          confession,
-          communion,
-          prayer
-        })
-      }
-    );
+  try {
+    const res = await fetch(
+      "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec",
+      {
+        method: "POST",
+        body: new URLSearchParams({
+          name,
+          date,
+          teacher,
+          gospel,
+          confession,
+          communion,
+          prayer // قيمة الصلاة/القراءة هي الآن الخيارات المجمعة (باكر, الغروب)
+        })
+      }
+    );
 
-    const text = await res.text();
-    messageBox.textContent = text;
-    messageBox.className = "success";
+    const text = await res.text();
+    messageBox.textContent = text;
+    messageBox.className = "success";
 
-  } catch (err) {
-    messageBox.textContent = "❌ حدث خطأ أثناء الإرسال";
-    messageBox.className = "error";
-  }
+  } catch (err) {
+    messageBox.textContent = "❌ حدث خطأ أثناء الإرسال";
+    messageBox.className = "error";
+  }
 });
 </script>
 
 
 </body>
 </html>
-
-
-
