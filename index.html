@@ -7,8 +7,31 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css"> 
-    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        /* كود CSS للرسائل (مهم لوجود حالة loading و success/error) */
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+        #message.success { color: green; }
+        #message.error { color: red; }
+        #message.loading { color: orange; }
+        
+        /* إضافة حالة الزر المعطل لتكملة منع الإرسال المتعدد */
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            /* يمكن إزالة أي تأثيرات تحريك إضافية إذا كانت موجودة في style.css */
+            transform: none !important; 
+            box-shadow: none !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -54,9 +77,10 @@
         </div>
 
         <div class="row">
-            <span>الصلاة :</span>
-            <label>NO <input type="radio" name="prayer" value="No"></label>
-            <label>YES <input type="radio" name="prayer" value="Yes"></label>
+            <span>توقيت القراءة/الصلاة :</span>
+            <label>باكر <input type="checkbox" name="readingTime" value="باكر"></label>
+            <label>الغروب <input type="checkbox" name="readingTime" value="الغروب"></label>
+            <label>النوم <input type="checkbox" name="readingTime" value="النوم"></label>
         </div>
 
         <div class="row">
@@ -83,12 +107,13 @@
 
 
 <script>
-// تحديد زر الإرسال والمتغير للحالة لمنع الإرسال المتعدد
+// تحديد زر الإرسال ومتغير الحالة لمنع الإرسال المتعدد
 const submitButton = document.getElementById("submitButton");
 let isSending = false;
 
+// يجب استخدام id="submitButton" في الـ HTML وتحديث الـ event listener ليتطابق مع هذا
 submitButton.addEventListener("click", async () => {
-    // ⚠️ منع الإرسال المتعدد: تحقق مما إذا كانت عملية إرسال جارية بالفعل
+    // ⚠️ المنع من الإرسال المتعدد: تجاهل الضغط إذا كانت عملية الإرسال جارية
     if (isSending) {
         console.log("جارٍ الإرسال بالفعل، تم تجاهل الضغطة الإضافية.");
         return; 
@@ -101,15 +126,22 @@ submitButton.addEventListener("click", async () => {
     const gospel = document.querySelector('input[name="gospel"]:checked')?.value;
     const confession = document.querySelector('input[name="confession"]:checked')?.value;
     const communion = document.querySelector('input[name="communion"]:checked')?.value;
-    const prayer = document.querySelector('input[name="prayer"]:checked')?.value;
+    
+    // جمع الخيارات المتعددة (باكر, الغروب, النوم)
+    const selectedTimes = Array.from(document.querySelectorAll('input[name="readingTime"]:checked'))
+        .map(checkbox => checkbox.value)
+        .join(", ");
+    
+    // إرسال الخيارات المجمعة تحت اسم الحقل القديم "prayer"
+    const prayer = selectedTimes || "لم يتم الاختيار"; 
 
     const messageBox = document.getElementById("message");
 
     // ===============================  
-    // 🔥 (1) التحقق من أن كل الحقول إجبارية
+    // 🔥 (1) التحقق من الحقول الإجبارية
     // ===============================  
-    if (!name || !date || !teacher || !gospel || !confession || !communion || !prayer) {
-        messageBox.textContent = "❌ من فضلك أكمل جميع الحقول المطلوبة (الاسم، التاريخ، الإشبين، وجميع الاختيارات)";
+    if (!name || !date || !teacher || !gospel || !confession || !communion || prayer === "لم يتم الاختيار") {
+        messageBox.textContent = "❌ من فضلك أكمل جميع الحقول المطلوبة";
         messageBox.className = "error";
         return;
     }
@@ -133,21 +165,21 @@ submitButton.addEventListener("click", async () => {
                     gospel,
                     confession,
                     communion,
-                    prayer
+                    prayer // تحتوي الآن على "باكر, الغروب" أو غيرها
                 })
             }
         );
 
         const text = await res.text();
         messageBox.textContent = text;
-        // تحديث الحالة (Success/Error) بناءً على محتوى الرد من Google Script
+        // تحديث الحالة بناءً على الرد
         messageBox.className = text.includes("✔") ? "success" : "error";
 
     } catch (err) {
-        messageBox.textContent = "❌ حدث خطأ أثناء الإرسال. الرجاء التأكد من اتصال الإنترنت والمحاولة لاحقًا.";
+        messageBox.textContent = "❌ حدث خطأ أثناء الإرسال. الرجاء المحاولة لاحقًا.";
         messageBox.className = "error";
     } finally {
-        // يتم تنفيذ هذا الجزء دائمًا (سواء نجح الإرسال أو فشل)
+        // يتم تنفيذ هذا الجزء دائمًا
         isSending = false; // إعادة ضبط الحالة
         submitButton.disabled = false; // تفعيل الزر مجدداً
     }
