@@ -20,7 +20,6 @@ header {
     padding: 20px 15px 50px 15px; /* Extra padding for curve effect */
     font-size: 22px;
     font-weight: bold;
-    /* This creates the curved bottom shape */
     border-bottom-left-radius: 50% 40px;
     border-bottom-right-radius: 50% 40px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -57,17 +56,30 @@ header h2::before, header h2::after {
     margin: 0 auto 10px auto;
 }
 
-/* 5. FORM SECTION (The Dark Brown Box at bottom) */
+/* 5. TOP BUTTON (The Note Button) */
+.main-btn {
+    background: #cf9f3e; /* Gold */
+    color: #4a2225;
+    border: 2px solid #4a2225;
+    padding: 10px 35px;
+    border-radius: 25px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 6. FORM SECTION (The Dark Brown Box at bottom) */
 .form-section {
     background: #4a2225; /* Dark Brown Box */
     padding: 40px 20px;
     margin-top: 30px;
-    border-radius: 30px 30px 0 0; /* Rounded top corners only */
+    border-radius: 30px 30px 0 0; 
     min-height: 400px;
     color: white;
 }
 
-/* 6. DATE FIELD */
+/* 7. DATE FIELD */
 .date-container {
     display: flex;
     justify-content: center;
@@ -87,12 +99,12 @@ header h2::before, header h2::after {
     outline: none;
 }
 
-/* 7. ROWS (The Gold Bars) */
+/* 8. ROWS (The Gold Bars) */
 .row {
     background: #cf9f3e; /* Gold Bar */
     padding: 10px 20px;
     margin: 15px 0;
-    border-radius: 50px; /* Fully rounded like pill */
+    border-radius: 50px; 
     color: #4a2225; /* Dark brown text label */
     font-size: 20px;
     font-weight: bold;
@@ -102,7 +114,7 @@ header h2::before, header h2::after {
     box-shadow: 0 4px 0 rgba(0,0,0,0.1);
 }
 
-/* 8. INPUTS INSIDE THE BARS (White Pills) */
+/* 9. INPUTS INSIDE THE BARS (White Pills) */
 .row input[type="text"], .row select {
     background: #fff; /* White input */
     border: none;
@@ -126,7 +138,7 @@ header h2::before, header h2::after {
     font-weight: bold;
 }
 
-/* 9. SUBMIT BUTTON */
+/* 10. SUBMIT BUTTON */
 .submit-btn {
     background: #f0e6d2; /* Cream button */
     color: #4a2225;
@@ -158,13 +170,13 @@ header h2::before, header h2::after {
     box-shadow: none;
 }
 
-/* 10. MESSAGES */
+/* 11. MESSAGES (styles for the error/success box) */
 #message { margin-top: 15px; font-weight: bold; color: #fff; }
 #message.success { color: #cf9f3e; }
 #message.error { color: #ff6b6b; }
 #message.loading { color: #cf9f3e; }
 
-/* 12. 🔥 STREAK STYLES (NEW ADDITION) 🔥 */
+/* 12. 🔥 STREAK STYLES 🔥 */
 .streak-container {
     display: flex;
     justify-content: center;
@@ -174,7 +186,7 @@ header h2::before, header h2::after {
 }
 
 .streak-card {
-    background: #fff; /* White background to pop against cream */
+    background: #f0e6d2; /* Cream background, matching body */
     padding: 10px 30px;
     border-radius: 50px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -188,6 +200,7 @@ header h2::before, header h2::after {
 
 .fire-icon {
     font-size: 2.2rem;
+    color: #e67e22; /* Orange color for the fire */
     animation: pulse 1.5s infinite;
 }
 
@@ -201,7 +214,11 @@ header h2::before, header h2::after {
     margin: 0;
     font-size: 1.2rem;
     font-weight: bold;
-    color: #cf9f3e; /* Gold number */
+    color: #4a2225; 
+}
+
+.streak-number {
+    color: #cf9f3e; /* Gold color for the count */
 }
 
 @keyframes pulse {
