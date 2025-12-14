@@ -27,7 +27,6 @@ header {
     margin-bottom: 20px;
 }
 
-/* Optional: Add crosses next to title if desired */
 header h2::before, header h2::after {
     content: "✝"; 
     margin: 0 10px;
@@ -38,6 +37,7 @@ header h2::before, header h2::after {
 /* 4. HERO SECTION */
 .hero {
     padding: 20px;
+    position: relative;
 }
 
 .hero h1 {
@@ -57,20 +57,7 @@ header h2::before, header h2::after {
     margin: 0 auto 10px auto;
 }
 
-/* 5. TOP BUTTON (The Note Button) */
-.main-btn {
-    background: #cf9f3e; /* Gold */
-    color: #4a2225;
-    border: 2px solid #4a2225;
-    padding: 10px 35px;
-    border-radius: 25px;
-    margin-top: 15px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-/* 6. FORM SECTION (The Dark Brown Box at bottom) */
+/* 5. FORM SECTION (The Dark Brown Box at bottom) */
 .form-section {
     background: #4a2225; /* Dark Brown Box */
     padding: 40px 20px;
@@ -80,7 +67,7 @@ header h2::before, header h2::after {
     color: white;
 }
 
-/* 7. DATE FIELD */
+/* 6. DATE FIELD */
 .date-container {
     display: flex;
     justify-content: center;
@@ -100,7 +87,7 @@ header h2::before, header h2::after {
     outline: none;
 }
 
-/* 8. ROWS (The Gold Bars) */
+/* 7. ROWS (The Gold Bars) */
 .row {
     background: #cf9f3e; /* Gold Bar */
     padding: 10px 20px;
@@ -115,7 +102,7 @@ header h2::before, header h2::after {
     box-shadow: 0 4px 0 rgba(0,0,0,0.1);
 }
 
-/* 9. INPUTS INSIDE THE BARS (White Pills) */
+/* 8. INPUTS INSIDE THE BARS (White Pills) */
 .row input[type="text"], .row select {
     background: #fff; /* White input */
     border: none;
@@ -127,7 +114,6 @@ header h2::before, header h2::after {
     outline: none;
 }
 
-/* Radio buttons container adjustment */
 .row div {
     display: flex;
     align-items: center;
@@ -140,7 +126,7 @@ header h2::before, header h2::after {
     font-weight: bold;
 }
 
-/* 10. SUBMIT BUTTON */
+/* 9. SUBMIT BUTTON */
 .submit-btn {
     background: #f0e6d2; /* Cream button */
     color: #4a2225;
@@ -155,12 +141,11 @@ header h2::before, header h2::after {
     box-shadow: 0 5px 0 #cf9f3e;
 }
 
-/* ⚠️ حالة الزر المعطل (لتكملة منع الإرسال المتعدد) */
 .submit-btn:disabled {
-    opacity: 0.6; /* يجعله باهتًا */
-    cursor: not-allowed; /* يغير مؤشر الماوس */
-    transform: none; /* يزيل تأثيرات التحريك */
-    box-shadow: none; /* يزيل الظل */
+    opacity: 0.6; 
+    cursor: not-allowed; 
+    transform: none; 
+    box-shadow: none; 
 }
 
 .submit-btn:hover {
@@ -173,8 +158,54 @@ header h2::before, header h2::after {
     box-shadow: none;
 }
 
-/* 11. MESSAGES */
+/* 10. MESSAGES */
 #message { margin-top: 15px; font-weight: bold; color: #fff; }
 #message.success { color: #cf9f3e; }
 #message.error { color: #ff6b6b; }
 #message.loading { color: #cf9f3e; }
+
+/* 12. 🔥 STREAK STYLES (NEW ADDITION) 🔥 */
+.streak-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px auto; 
+    position: relative;
+    z-index: 10;
+}
+
+.streak-card {
+    background: #fff; /* White background to pop against cream */
+    padding: 10px 30px;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 3px solid #cf9f3e; /* Gold Border */
+    min-width: 220px;
+    justify-content: center;
+}
+
+.fire-icon {
+    font-size: 2.2rem;
+    animation: pulse 1.5s infinite;
+}
+
+.streak-info h3 {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #4a2225; /* Dark brown title */
+}
+
+.streak-info p {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #cf9f3e; /* Gold number */
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
