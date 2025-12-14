@@ -7,6 +7,27 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* كود CSS للرسائل (مهم لوجود حالة loading و success/error) */
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+        #message.success { color: green; }
+        #message.error { color: red; }
+        #message.loading { color: orange; }
+        
+        /* إضافة حالة الزر المعطل لمنع الإرسال المتعدد */
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important; 
+            box-shadow: none !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,6 +40,7 @@
         <img src="Screenshot_2025-11-26_201754-removebg-preview.png" alt="logo" class="logo">
         <h1>فصل تلمذة<br>نوتة روحية</h1>
         <p>ويب سايت مصمم لمتابعة النمو الروحي لفصول تلمذة</p>
+        <button class="main-btn">النوتة</button>
         
         <div class="streak-container">
             <div class="streak-card">
@@ -124,7 +146,7 @@
             if (lastLogDate === yesterday.toDateString()) {
                 currentStreak++;
             } 
-            // 3. لو فاته يوم أو أول مرة، يبدأ من 1
+            // 3. لو فاته يوم أو أول مرة، يبدأ من 1 (إعادة التعيين)
             else {
                 currentStreak = 1;
             }
@@ -143,6 +165,9 @@
     const submitButton = document.getElementById("submitButton");
     let isSending = false;
 
+    // تأكد أن هذا الرابط هو نفسه الرابط الذي ستحصل عليه بعد نشر Google Script
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec";
+
     submitButton.addEventListener("click", async () => {
         if (isSending) return;
 
@@ -157,6 +182,9 @@
             .map(checkbox => checkbox.value).join(", ");
         
         const prayer = selectedTimes || "لم يتم الاختيار"; 
+        
+        // 🔥 الحصول على قيمة الستريك الحالية لإرسالها
+        const currentStreak = localStorage.getItem('spiritualStreak') || '0';
 
         const messageBox = document.getElementById("message");
 
@@ -173,11 +201,18 @@
 
         try {
             const res = await fetch(
-                "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec",
+                SCRIPT_URL,
                 {
                     method: "POST",
                     body: new URLSearchParams({
-                        name, date, teacher, gospel, confession, communion, prayer 
+                        name, 
+                        date, 
+                        teacher, 
+                        gospel, 
+                        confession, 
+                        communion, 
+                        prayer,
+                        **streak: currentStreak** // إرسال العداد إلى السكريبت
                     })
                 }
             );
@@ -192,7 +227,7 @@
             }
 
         } catch (err) {
-            messageBox.textContent = "❌ حدث خطأ أثناء الإرسال.";
+            messageBox.textContent = "❌ حدث خطأ أثناء الإرسال. الرجاء المحاولة لاحقًا.";
             messageBox.className = "error";
         } finally {
             isSending = false; 
