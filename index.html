@@ -6,32 +6,7 @@
     <title>نونة روحية - فصل تلمذة</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="style.css">
-
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-        }
-        /* كود CSS للرسائل (مهم لوجود حالة loading و success/error) */
-        #message {
-            margin-top: 15px;
-            font-weight: bold;
-            color: #333;
-        }
-        #message.success { color: green; }
-        #message.error { color: red; }
-        #message.loading { color: orange; }
-        
-        /* إضافة حالة الزر المعطل لتكملة منع الإرسال المتعدد */
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            /* يمكن إزالة أي تأثيرات تحريك إضافية إذا كانت موجودة في style.css */
-            transform: none !important; 
-            box-shadow: none !important;
-        }
-    </style>
 </head>
 
 <body>
@@ -42,13 +17,24 @@
 
     <section class="hero">
         <img src="Screenshot_2025-11-26_201754-removebg-preview.png" alt="logo" class="logo">
-        <h1>فصل تلميذه<br>نونه الروحية</h1>
-        <p>ذا الويب سايت مصمم لفصول تلمذة</p>
-        <button class="main-btn">النوتة</button>
+        <h1>فصل تلمذة<br>نوتة روحية</h1>
+        <p>ويب سايت مصمم لمتابعة النمو الروحي لفصول تلمذة</p>
+        
+        
     </section>
 
     <section class="form-section">
 
+<div class="streak-container">
+            <div class="streak-card">
+                <span class="fire-icon">🔥</span>
+                <div class="streak-info">
+                    <h3>حماسك الروحي</h3>
+                    <p><span id="streakCount" class="streak-number">0</span> أيام متواصلة</p>
+                </div>
+            </div>
+        </div> 
+<h3>الستريك تحت التجربه</h3>
         <div class="row">
             <span>الاسم :</span>
             <input type="text" id="studentName" placeholder="اكتب اسمك هنا">
@@ -60,27 +46,35 @@
 
         <div class="row">
             <span>الإنجيل :</span>
-            <label>NO <input type="radio" name="gospel" value="No"></label>
-            <label>YES <input type="radio" name="gospel" value="Yes"></label>
+            <div>
+                <label>NO <input type="radio" name="gospel" value="No"></label>
+                <label>YES <input type="radio" name="gospel" value="Yes"></label>
+            </div>
         </div>
 
         <div class="row">
             <span>الاعتراف :</span>
-            <label>NO <input type="radio" name="confession" value="No"></label>
-            <label>YES <input type="radio" name="confession" value="Yes"></label>
+            <div>
+                <label>NO <input type="radio" name="confession" value="No"></label>
+                <label>YES <input type="radio" name="confession" value="Yes"></label>
+            </div>
         </div>
 
         <div class="row">
             <span>التناول :</span>
-            <label>NO <input type="radio" name="communion" value="No"></label>
-            <label>YES <input type="radio" name="communion" value="Yes"></label>
+            <div>
+                <label>NO <input type="radio" name="communion" value="No"></label>
+                <label>YES <input type="radio" name="communion" value="Yes"></label>
+            </div>
         </div>
 
         <div class="row">
             <span>توقيت القراءة/الصلاة :</span>
-            <label>باكر <input type="checkbox" name="readingTime" value="باكر"></label>
-            <label>الغروب <input type="checkbox" name="readingTime" value="الغروب"></label>
-            <label>النوم <input type="checkbox" name="readingTime" value="النوم"></label>
+            <div>
+                <label>باكر <input type="checkbox" name="readingTime" value="باكر"></label>
+                <label>الغروب <input type="checkbox" name="readingTime" value="الغروب"></label>
+                <label>النوم <input type="checkbox" name="readingTime" value="النوم"></label>
+            </div>
         </div>
 
         <div class="row">
@@ -105,87 +99,109 @@
 
     </section>
 
-
 <script>
-// تحديد زر الإرسال ومتغير الحالة لمنع الإرسال المتعدد
-const submitButton = document.getElementById("submitButton");
-let isSending = false;
-
-// يجب استخدام id="submitButton" في الـ HTML وتحديث الـ event listener ليتطابق مع هذا
-submitButton.addEventListener("click", async () => {
-    // ⚠️ المنع من الإرسال المتعدد: تجاهل الضغط إذا كانت عملية الإرسال جارية
-    if (isSending) {
-        console.log("جارٍ الإرسال بالفعل، تم تجاهل الضغطة الإضافية.");
-        return; 
+    // --- 1. STREAK LOGIC (كود العداد) ---
+    function updateStreakDisplay() {
+        const count = localStorage.getItem('spiritualStreak') || 0;
+        document.getElementById('streakCount').textContent = count;
     }
 
-    const name = document.getElementById("studentName").value.trim();
-    const date = document.getElementById("dateField").value;
-    const teacher = document.getElementById("teacherSelect").value;
+    function checkAndIncrementStreak(gospelValue, prayerValue) {
+        // القاعدة: لازم يكون قرأ إنجيل وصلى عشان العداد يزيد
+        if (gospelValue === "Yes" && prayerValue !== "لم يتم الاختيار") {
+            
+            const todayStr = new Date().toDateString(); 
+            const lastLogDate = localStorage.getItem('lastStreakDate');
+            let currentStreak = parseInt(localStorage.getItem('spiritualStreak') || '0');
 
-    const gospel = document.querySelector('input[name="gospel"]:checked')?.value;
-    const confession = document.querySelector('input[name="confession"]:checked')?.value;
-    const communion = document.querySelector('input[name="communion"]:checked')?.value;
-    
-    // جمع الخيارات المتعددة (باكر, الغروب, النوم)
-    const selectedTimes = Array.from(document.querySelectorAll('input[name="readingTime"]:checked'))
-        .map(checkbox => checkbox.value)
-        .join(", ");
-    
-    // إرسال الخيارات المجمعة تحت اسم الحقل القديم "prayer"
-    const prayer = selectedTimes || "لم يتم الاختيار"; 
-
-    const messageBox = document.getElementById("message");
-
-    // ===============================  
-    // 🔥 (1) التحقق من الحقول الإجبارية
-    // ===============================  
-    if (!name || !date || !teacher || !gospel || !confession || !communion || prayer === "لم يتم الاختيار") {
-        messageBox.textContent = "❌ من فضلك أكمل جميع الحقول المطلوبة";
-        messageBox.className = "error";
-        return;
-    }
-
-    // لو كل البيانات تمام ↓↓↓
-    isSending = true; // تعيين الحالة إلى قيد الإرسال
-    submitButton.disabled = true; // تعطيل الزر لمنع الضغط المتكرر
-
-    messageBox.textContent = "جارٍ الإرسال...";
-    messageBox.className = "loading";
-
-    try {
-        const res = await fetch(
-            "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec",
-            {
-                method: "POST",
-                body: new URLSearchParams({
-                    name,
-                    date,
-                    teacher,
-                    gospel,
-                    confession,
-                    communion,
-                    prayer // تحتوي الآن على "باكر, الغروب" أو غيرها
-                })
+            // 1. لو نفس اليوم، ميزودش
+            if (lastLogDate === todayStr) {
+                return; 
             }
-        );
 
-        const text = await res.text();
-        messageBox.textContent = text;
-        // تحديث الحالة بناءً على الرد
-        messageBox.className = text.includes("✔") ? "success" : "error";
+            // 2. لو التاريخ امبارح، يزود 1
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            if (lastLogDate === yesterday.toDateString()) {
+                currentStreak++;
+            } 
+            // 3. لو فاته يوم أو أول مرة، يبدأ من 1
+            else {
+                currentStreak = 1;
+            }
 
-    } catch (err) {
-        messageBox.textContent = "❌ حدث خطأ أثناء الإرسال. الرجاء المحاولة لاحقًا.";
-        messageBox.className = "error";
-    } finally {
-        // يتم تنفيذ هذا الجزء دائمًا
-        isSending = false; // إعادة ضبط الحالة
-        submitButton.disabled = false; // تفعيل الزر مجدداً
+            // حفظ
+            localStorage.setItem('spiritualStreak', currentStreak);
+            localStorage.setItem('lastStreakDate', todayStr);
+            updateStreakDisplay();
+        }
     }
-});
-</script>
 
+    // تشغيل العرض عند التحميل
+    updateStreakDisplay();
+
+    // --- 2. SENDING LOGIC (كود الإرسال) ---
+    const submitButton = document.getElementById("submitButton");
+    let isSending = false;
+
+    submitButton.addEventListener("click", async () => {
+        if (isSending) return;
+
+        const name = document.getElementById("studentName").value.trim();
+        const date = document.getElementById("dateField").value;
+        const teacher = document.getElementById("teacherSelect").value;
+        const gospel = document.querySelector('input[name="gospel"]:checked')?.value;
+        const confession = document.querySelector('input[name="confession"]:checked')?.value;
+        const communion = document.querySelector('input[name="communion"]:checked')?.value;
+        
+        const selectedTimes = Array.from(document.querySelectorAll('input[name="readingTime"]:checked'))
+            .map(checkbox => checkbox.value).join(", ");
+        
+        const prayer = selectedTimes || "لم يتم الاختيار"; 
+
+        const messageBox = document.getElementById("message");
+
+        if (!name || !date || !teacher || !gospel || !confession || !communion || prayer === "لم يتم الاختيار") {
+            messageBox.textContent = "❌ من فضلك أكمل جميع الحقول المطلوبة";
+            messageBox.className = "error";
+            return;
+        }
+
+        isSending = true; 
+        submitButton.disabled = true; 
+        messageBox.textContent = "جارٍ الإرسال...";
+        messageBox.className = "loading";
+
+        try {
+            const res = await fetch(
+                "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec",
+                {
+                    method: "POST",
+                    body: new URLSearchParams({
+                        name, date, teacher, gospel, confession, communion, prayer 
+                    })
+                }
+            );
+
+            const text = await res.text();
+            messageBox.textContent = text;
+            messageBox.className = text.includes("✔") ? "success" : "error";
+
+            // 🔥 تحديث العداد فقط لو الإرسال نجح
+            if (text.includes("✔") || res.ok) {
+                checkAndIncrementStreak(gospel, prayer);
+            }
+
+        } catch (err) {
+            messageBox.textContent = "❌ حدث خطأ أثناء الإرسال.";
+            messageBox.className = "error";
+        } finally {
+            isSending = false; 
+            submitButton.disabled = false; 
+        }
+    });
+</script>
 
 </body>
 </html>
