@@ -269,7 +269,7 @@
                 <option value="طاسوني كريستين">طاسوني كريستين</option>
             </select>
         </div>
-        <div class="new-year-badge">عام سعيد 2026</div>
+       
         
 
         <button class="submit-btn" id="submitButton">إرسال بنعمة الله</button>
@@ -327,7 +327,7 @@
                 method: "POST",
                 body: new URLSearchParams({ name, date, teacher, gospel, confession, communion, prayer })
             });
-            messageBox.textContent = "تم الإرسال بنجاح. عيد ميلاد مجيد!";
+            messageBox.textContent = "تم الإرسال بنجاح.!";
         } catch (err) {
             messageBox.textContent = "عذراً، حدث خطأ فني. حاول مرة أخرى.";
         } finally {
