@@ -1,4 +1,133 @@
-/* 1. Reset & Fonts */
+/* FORCE RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Cairo', sans-serif !important;
+}
+
+body {
+    background-color: #fdfaf1 !important; /* Cream background */
+    direction: rtl !important;
+    text-align: center;
+}
+
+/* HEADER WITH CROSSES */
+header {
+    background-color: #4a2225 !important;
+    padding: 15px 0 !important;
+    border-bottom: 2px solid #cf9f3e !important;
+}
+
+header h2 {
+    color: #cf9f3e !important;
+    font-size: 18px !important;
+    text-transform: uppercase;
+}
+
+/* HERO SECTION */
+.hero {
+    padding: 40px 20px 10px !important;
+    background-color: #fdfaf1 !important;
+}
+
+.logo {
+    width: 150px !important;
+    filter: none !important;
+    margin-bottom: 10px !important;
+}
+
+.hero h1 {
+    font-size: 30px !important;
+    color: #4a2225 !important;
+    font-weight: 800 !important;
+    background: none !important;
+    -webkit-text-fill-color: #4a2225 !important;
+}
+
+.hero p {
+    color: #4a2225 !important;
+    font-weight: 700 !important;
+}
+
+/* THE GOLD OVAL "NOTE" BADGE */
+.hero p::after {
+    content: "النوتة";
+    display: block;
+    width: fit-content;
+    margin: 15px auto 0;
+    background-color: #cf9f3e;
+    color: #4a2225;
+    padding: 5px 50px;
+    border-radius: 25px;
+    font-weight: 800;
+    border: 2px solid #4a2225;
+}
+
+/* THE DARK CURVED SECTION */
+.form-section {
+    background-color: #4a2225 !important;
+    border-radius: 40px 40px 0 0 !important; /* The curve from the video */
+    padding: 30px 20px 60px !important;
+    margin-top: 20px !important;
+    max-width: 100% !important;
+}
+
+/* DATE PICKER */
+#dateField {
+    background-color: #cf9f3e !important;
+    color: #4a2225 !important;
+    border: none !important;
+    border-radius: 15px !important;
+    padding: 12px !important;
+    font-weight: 800 !important;
+    width: 100% !important;
+    margin-bottom: 20px !important;
+}
+
+/* GOLD ROWS */
+.row {
+    background-color: #cf9f3e !important;
+    border-radius: 15px !important;
+    padding: 10px 15px !important;
+    margin-bottom: 12px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border: none !important;
+}
+
+.row span {
+    color: #4a2225 !important;
+    font-weight: 800 !important;
+}
+
+/* WHITE INPUTS INSIDE ROWS */
+.row input[type="text"], .row select {
+    background-color: #fff !important;
+    border-radius: 10px !important;
+    padding: 5px 10px !important;
+    border: none !important;
+    width: 55% !important;
+}
+
+/* THE SEND BUTTON */
+.submit-btn {
+    background-color: #fdfaf1 !important;
+    color: #4a2225 !important;
+    border: 5px solid #cf9f3e !important; /* Thick gold border */
+    border-radius: 20px !important;
+    padding: 15px !important;
+    font-size: 22px !important;
+    font-weight: 900 !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    box-shadow: none !important;
+}
+
+/* CLEANUP */
+.star { display: none !important; }
+#message { color: #cf9f3e !important; }/* 1. Reset & Fonts */
 * {
     margin: 0; padding: 0; box-sizing: border-box;
     font-family: "Cairo", sans-serif;
@@ -148,3 +277,4 @@ header {
 .success { color: #cf9f3e; }
 .error { color: #ff6b6b; }
 .loading { color: #cf9f3e; }
+
