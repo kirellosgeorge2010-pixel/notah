@@ -49,7 +49,7 @@
         </div>
 
         <div class="row"><span>التاريخ:</span> <input type="date" id="dateField"></div>
-        <div class="row"><span>الاسم:</span> <input type="text" id="studentName"></div>
+        <div class="row"><span>الاسم:</span> <input type="text" id="studentName" placeholder="اكتب اسمك رباعي"></div>
 
         <div class="row"><span>الإنجيل:</span><div class="options-group"><label>YES <input type="radio" name="gospel" value="Yes"></label><label>NO <input type="radio" name="gospel" value="No"></label></div></div>
         <div class="row"><span>الاعتراف:</span><div class="options-group"><label>YES <input type="radio" name="confession" value="Yes"></label><label>NO <input type="radio" name="confession" value="No"></label></div></div>
@@ -59,7 +59,7 @@
 
         <div class="row"><span>الأشبين:</span>
             <select id="teacherSelect">
-                <option value="">اختار...</option>
+                <option value="">اختار اسم الأستاذ...</option>
                 <option value="استاذ بيشوي كامل">استاذ بيشوي كامل</option>
                 <option value="استاذ ايميل">استاذ ايميل</option>
                 <option value="استاذ جوزيف">استاذ جوزيف</option>
@@ -88,20 +88,29 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec";
 
         document.getElementById("submitBtn").onclick = async () => {
+            // سحب القيم
             const name = document.getElementById("studentName").value.trim();
             const date = document.getElementById("dateField").value;
             const teacher = document.getElementById("teacherSelect").value;
             const reportType = document.querySelector('input[name="reportType"]:checked').value;
-            const gospel = document.querySelector('input[name="gospel"]:checked')?.value || "No";
-            const confession = document.querySelector('input[name="confession"]:checked')?.value || "No";
-            const communion = document.querySelector('input[name="communion"]:checked')?.value || "No";
-            const prayer = Array.from(document.querySelectorAll('input[name="prayer"]:checked')).map(el => el.value).join(", ") || "لا يوجد";
+            
+            // التأكد من اختيار الراديو بوتون (مهم جداً للحل النهائي)
+            const gospel = document.querySelector('input[name="gospel"]:checked')?.value;
+            const confession = document.querySelector('input[name="confession"]:checked')?.value;
+            const communion = document.querySelector('input[name="communion"]:checked')?.value;
+            
+            const prayerElements = document.querySelectorAll('input[name="prayer"]:checked');
+            const prayer = Array.from(prayerElements).map(el => el.value).join(", ") || "لا يوجد";
 
-            if(!name || !date || !teacher) return alert("أكمل البيانات!");
+            // 🛑 شرط المنع: لو فيه أي معلومة أساسية ناقصة
+            if(!name || !date || !teacher || !gospel || !confession || !communion) {
+                alert("يا بطل، فيه بيانات ناقصة! (تأكد من كتابة الاسم، التاريخ، واختيار الإنجيل والاعتراف والتناول واسم الأستاذ)");
+                return; // بيوقف الكود هنا ومش بيبعت
+            }
 
+            // لو البيانات كاملة.. ابدأ الإرسال
             document.getElementById("overlay").classList.add("show");
             
-            // ✅ الإرسال عن طريق FormData يضمن الترتيب وتوافق الأسماء مع الـ Script
             const formData = new URLSearchParams();
             formData.append("name", name);
             formData.append("date", date);
@@ -118,7 +127,10 @@
                 document.getElementById("success").classList.remove("hidden");
                 document.getElementById("statusText").textContent = "تم بنجاح";
                 setTimeout(() => location.reload(), 2000);
-            } catch (e) { alert("خطأ!"); }
+            } catch (e) { 
+                alert("حدث خطأ في الشبكة، حاول مرة أخرى");
+                document.getElementById("overlay").classList.remove("show");
+            }
         };
     </script>
 </body>
