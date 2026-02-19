@@ -16,7 +16,7 @@
         .form-section { background: var(--primary); padding: 30px 15px 80px; border-radius: 40px 40px 0 0; margin-top: 20px; }
         .row { background: var(--gold); padding: 12px; margin-bottom: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; }
         .row span { font-weight: 800; font-size: 16px; color: var(--primary); }
-        input, select { width: 55%; padding: 10px; border-radius: 10px; border: none; font-weight: 600; outline: none; }
+        input[type="text"], input[type="date"], select { width: 55%; padding: 10px; border-radius: 10px; border: none; font-weight: 600; outline: none; }
         .options-group { display: flex; gap: 8px; }
         .options-group label { background: rgba(255,255,255,0.4); padding: 6px 12px; border-radius: 10px; font-size: 14px; font-weight: 800; display: flex; align-items: center; gap: 5px; cursor: pointer; }
         .submit-btn { width: 100%; padding: 18px; background: var(--cream); color: var(--primary); border: 5px solid var(--gold); border-radius: 20px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 10px; }
@@ -25,7 +25,7 @@
         .popup { background: white; padding: 40px; border-radius: 25px; text-align: center; border: 5px solid var(--gold); width: 85%; }
         .spinner { border: 5px solid #f3f3f3; border-top: 5px solid var(--gold); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        .icon { width: 70px; height: 70px; margin-bottom: 10px; }
+        .icon { width: 70px; height: 70px; margin-bottom: 10px; fill: #4CAF50; }
         .hidden { display: none; }
     </style>
 </head>
@@ -34,11 +34,12 @@
     <header><h2>♱ KIRELLOS GEORGE ♱</h2></header>
 
     <div class="hero">
-        <img src="Screenshot_2025-11-26_201754-removebg-preview.png" style="width:130px;" onerror="this.style.display='none'">
+        <img src="https://via.placeholder.com/130" style="width:130px;" id="heroImg">
         <h1>نوته تلمذه 2026</h1>
-        <div class="badge">النوتة</div>
-   
+        <div class="badge">النوتة اليومية</div>
+    </div>
 
+    <section class="form-section">
         <div class="row"><span>التاريخ:</span> <input type="date" id="dateField"></div>
         <div class="row"><span>الاسم:</span> <input type="text" id="studentName" placeholder="اكتب اسمك رباعي"></div>
 
@@ -70,7 +71,9 @@
     <div id="overlay" class="overlay">
         <div class="popup">
             <div id="loader" class="spinner"></div>
-            <div id="success" class="hidden"><svg viewBox="0 0 52 52" class="icon"><circle cx="26" cy="26" r="25" fill="none" stroke="#4CAF50" stroke-width="3"/><path fill="none" stroke="#4CAF50" stroke-width="3" d="M14 27l7 7 16-16"/></svg></div>
+            <div id="success" class="hidden">
+                <svg viewBox="0 0 52 52" style="width:70px; height:70px;"><circle cx="26" cy="26" r="25" fill="none" stroke="#4CAF50" stroke-width="3"/><path fill="none" stroke="#4CAF50" stroke-width="3" d="M14 27l7 7 16-16"/></svg>
+            </div>
             <h3 id="statusText">جاري الإرسال...</h3>
         </div>
     </div>
@@ -79,13 +82,11 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec";
 
         document.getElementById("submitBtn").onclick = async () => {
-            // سحب القيم
             const name = document.getElementById("studentName").value.trim();
             const date = document.getElementById("dateField").value;
             const teacher = document.getElementById("teacherSelect").value;
-            const reportType = document.querySelector('input[name="reportType"]:checked').value;
             
-            // التأكد من اختيار الراديو بوتون (مهم جداً للحل النهائي)
+            // Fixed the crash by adding optional chaining ?.
             const gospel = document.querySelector('input[name="gospel"]:checked')?.value;
             const confession = document.querySelector('input[name="confession"]:checked')?.value;
             const communion = document.querySelector('input[name="communion"]:checked')?.value;
@@ -93,19 +94,18 @@
             const prayerElements = document.querySelectorAll('input[name="prayer"]:checked');
             const prayer = Array.from(prayerElements).map(el => el.value).join(", ") || "لا يوجد";
 
-            // 🛑 شرط المنع: لو فيه أي معلومة أساسية ناقصة
+            // Validation Check
             if(!name || !date || !teacher || !gospel || !confession || !communion) {
-                alert("يا بطل، فيه بيانات ناقصة! (تأكد من كتابة الاسم، التاريخ، واختيار الإنجيل والاعتراف والتناول واسم الأستاذ)");
-                return; // بيوقف الكود هنا ومش بيبعت
+                alert("يا بطل، فيه بيانات ناقصة! تأكد من اختيار كل الخانات.");
+                return;
             }
 
-            // لو البيانات كاملة.. ابدأ الإرسال
             document.getElementById("overlay").classList.add("show");
             
             const formData = new URLSearchParams();
             formData.append("name", name);
             formData.append("date", date);
-            formData.append("reportType", reportType);
+            formData.append("reportType", "Daily"); // Added default value so script doesn't fail
             formData.append("gospel", gospel);
             formData.append("confession", confession);
             formData.append("communion", communion);
@@ -113,11 +113,17 @@
             formData.append("teacher", teacher);
 
             try {
+                // Post request
                 await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: formData });
+                
+                // Success UI
                 document.getElementById("loader").classList.add("hidden");
                 document.getElementById("success").classList.remove("hidden");
                 document.getElementById("statusText").textContent = "تم بنجاح";
-                setTimeout(() => location.reload(), 2000);
+                
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
             } catch (e) { 
                 alert("حدث خطأ في الشبكة، حاول مرة أخرى");
                 document.getElementById("overlay").classList.remove("show");
@@ -126,6 +132,3 @@
     </script>
 </body>
 </html>
-
-
-
