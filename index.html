@@ -13,19 +13,78 @@
         header h2 { color: var(--gold); border: 2px solid var(--gold); display: inline-block; padding: 5px 25px; border-radius: 20px; font-weight: 900; }
         .hero { text-align: center; padding: 20px; }
         .badge { background: var(--gold); padding: 5px 40px; border-radius: 20px; display: inline-block; font-weight: 900; margin-top: 10px; border: 2px solid var(--primary); }
+
+        /* ======= STREAK CARD ======= */
+        .streak-card {
+            margin: 15px 15px 0;
+            background: var(--primary);
+            border-radius: 20px;
+            border: 3px solid var(--gold);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            min-height: 72px;
+        }
+        .streak-card.visible { opacity: 1; transform: translateY(0); }
+        .streak-left { display: flex; align-items: center; gap: 12px; }
+        .streak-flame {
+            font-size: 38px;
+            line-height: 1;
+            filter: drop-shadow(0 0 6px #ff7a00);
+            animation: pulse 1.6s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+        .streak-info { display: flex; flex-direction: column; }
+        .streak-count { font-size: 32px; font-weight: 900; color: var(--gold); line-height: 1; }
+        .streak-label { font-size: 13px; color: rgba(255,255,255,0.75); font-weight: 700; margin-top: 2px; }
+        .streak-msg { color: var(--gold); font-size: 13px; font-weight: 800; text-align: left; max-width: 140px; line-height: 1.4; }
+        .streak-loading { color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 700; width: 100%; text-align: center; }
+
+
         .form-section { background: var(--primary); padding: 30px 15px 80px; border-radius: 40px 40px 0 0; margin-top: 20px; }
         .row { background: var(--gold); padding: 12px; margin-bottom: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; }
         .row span { font-weight: 800; font-size: 16px; color: var(--primary); }
         input[type="text"], input[type="date"], select { width: 55%; padding: 10px; border-radius: 10px; border: none; font-weight: 600; outline: none; }
-        .options-group { display: flex; gap: 8px; }
+        /* ======= WEEKLY DATE ROW ======= */
+        .date-weekly { flex-direction: column; align-items: flex-start; gap: 10px; }
+        .date-range-group { display: flex; gap: 8px; width: 100%; }
+        .date-range-item { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+        .date-range-item label { font-size: 12px; font-weight: 900; color: var(--primary); opacity: 0.7; }
+        .date-range-item input[type="date"] { width: 100%; font-size: 13px; padding: 8px; }
+        .options-group { display: flex; gap: 8px; flex-wrap: wrap; }
         .options-group label { background: rgba(255,255,255,0.4); padding: 6px 12px; border-radius: 10px; font-size: 14px; font-weight: 800; display: flex; align-items: center; gap: 5px; cursor: pointer; }
+        
+        /* ======= REPORT TYPE TOGGLE ======= */
+        .report-toggle { display: flex; gap: 0; border-radius: 12px; overflow: hidden; border: 2px solid var(--primary); }
+        .report-toggle label {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--primary);
+            background: rgba(255,255,255,0.35);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+        }
+        .report-toggle input[type="radio"] { display: none; }
+        .report-toggle input[type="radio"]:checked + label {
+            background: var(--primary);
+            color: var(--gold);
+        }
+
         .submit-btn { width: 100%; padding: 18px; background: var(--cream); color: var(--primary); border: 5px solid var(--gold); border-radius: 20px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 10px; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 1000; visibility: hidden; opacity: 0; transition: 0.3s; }
         .overlay.show { visibility: visible; opacity: 1; }
         .popup { background: white; padding: 40px; border-radius: 25px; text-align: center; border: 5px solid var(--gold); width: 85%; }
         .spinner { border: 5px solid #f3f3f3; border-top: 5px solid var(--gold); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        .icon { width: 70px; height: 70px; margin-bottom: 10px; fill: #4CAF50; }
         .hidden { display: none; }
     </style>
 </head>
@@ -39,9 +98,30 @@
         <div class="badge">النوتة اليومية</div>
     </div>
 
+    <!-- STREAK CARD (hidden until name entered) -->
+    <div class="streak-card" id="streakCard"></div>
+
     <section class="form-section">
-        <div class="row"><span>التاريخ:</span> <input type="date" id="dateField"></div>
-        <div class="row"><span>الاسم:</span> <input type="text" id="studentName" placeholder="اكتب اسمك رباعي"></div>
+        <!-- DATE ROW — switches between daily (1 field) and weekly (2 fields) -->
+        <div class="row" id="dateRow">
+            <span>التاريخ:</span>
+            <input type="date" id="dateField">
+        </div>
+        <div class="row">
+            <span>الاسم:</span>
+            <input type="text" id="studentName" placeholder="اكتب اسمك رباعي">
+        </div>
+
+        <!-- ======= REPORT TYPE ======= -->
+        <div class="row">
+            <span>نوع التقرير:</span>
+            <div class="report-toggle">
+                <input type="radio" name="reportType" id="typeDaily" value="يومي" checked>
+                <label for="typeDaily">📅 يومي</label>
+                <input type="radio" name="reportType" id="typeWeekly" value="أسبوعي">
+                <label for="typeWeekly">📆 أسبوعي</label>
+            </div>
+        </div>
 
         <div class="row"><span>الإنجيل:</span><div class="options-group"><label>YES <input type="radio" name="gospel" value="Yes"></label><label>NO <input type="radio" name="gospel" value="No"></label></div></div>
         <div class="row"><span>الاعتراف:</span><div class="options-group"><label>YES <input type="radio" name="confession" value="Yes"></label><label>NO <input type="radio" name="confession" value="No"></label></div></div>
@@ -81,31 +161,167 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6GL3CFFEyCH7GBP-I51LyTzMRVfmihfpX-ONCFwOKMBKJdzHbWibnErBSOhqAaJsB/exec";
 
+        // ============ AUTO-FILL NAME ============
+        const savedName = localStorage.getItem("notah_student_name");
+        if (savedName) {
+            document.getElementById("studentName").value = savedName;
+            loadStreak(savedName);
+        }
+
+        // Set today's date by default
+        document.getElementById("dateField").valueAsDate = new Date();
+
+        // ============ REPORT TYPE → TOGGLE DATE ROW ============
+        function getWeekBounds() {
+            const today = new Date();
+            // Week starts Saturday (Coptic week), ends Friday
+            const day = today.getDay(); // 0=Sun,1=Mon,...,6=Sat
+            const diffToSat = (day >= 6) ? 0 : -(day + 1); // go back to last Saturday
+            const sat = new Date(today);
+            sat.setDate(today.getDate() + diffToSat);
+            const fri = new Date(sat);
+            fri.setDate(sat.getDate() + 6);
+            return { from: sat, to: fri };
+        }
+
+        // Fix: use local date parts — Cairo is UTC+2, toISOString() shifts back 1 day
+        function toInputDate(d) {
+            const y = d.getFullYear();
+            const mo = String(d.getMonth() + 1).padStart(2, '0');
+            const dy = String(d.getDate()).padStart(2, '0');
+            return y + '-' + mo + '-' + dy;
+        }
+
+        function updateDateRow(isWeekly) {
+            const row = document.getElementById("dateRow");
+            if (isWeekly) {
+                const { from, to } = getWeekBounds();
+                row.classList.add("date-weekly");
+                row.innerHTML = `
+                    <span>فترة الأسبوع:</span>
+                    <div class="date-range-group">
+                        <div class="date-range-item">
+                            <label>📅 من (بداية الأسبوع)</label>
+                            <input type="date" id="dateFrom" value="${toInputDate(from)}">
+                        </div>
+                        <div class="date-range-item">
+                            <label>📅 إلى (نهاية الأسبوع)</label>
+                            <input type="date" id="dateTo" value="${toInputDate(to)}">
+                        </div>
+                    </div>
+                `;
+            } else {
+                row.classList.remove("date-weekly");
+                row.innerHTML = `
+                    <span>التاريخ:</span>
+                    <input type="date" id="dateField" value="${toInputDate(new Date())}">
+                `;
+            }
+        }
+
+        document.querySelectorAll('input[name="reportType"]').forEach(radio => {
+            radio.addEventListener("change", () => {
+                updateDateRow(radio.value === "أسبوعي");
+            });
+        });
+
+        // ============ STREAK ============
+        document.getElementById("studentName").addEventListener("blur", () => {
+            const name = document.getElementById("studentName").value.trim();
+            if (name) loadStreak(name);
+        });
+
+        function loadStreak(name) {
+            const card = document.getElementById("streakCard");
+            card.classList.add("visible");
+            renderStreakCard(card, getLocalStreak(name));
+        }
+
+        function calcStreak(rawDates) {
+            if (!rawDates || rawDates.length === 0) return 0;
+            // Dates are stored as YYYY-MM-DD strings — use directly, no Date() parsing (avoids UTC shift)
+            const dateSet = new Set(rawDates.filter(d => d && d.match(/^\d{4}-\d{2}-\d{2}$/)));
+
+            let streak = 0;
+            const today = new Date(); today.setHours(0,0,0,0);
+            let check = new Date(today);
+            const todayStr = toInputDate(today);
+            const yday = new Date(today); yday.setDate(yday.getDate() - 1);
+            if (!dateSet.has(todayStr) && !dateSet.has(toInputDate(yday))) return 0;
+            while (true) {
+                const key = toInputDate(check);
+                if (dateSet.has(key)) { streak++; check.setDate(check.getDate() - 1); }
+                else break;
+            }
+            return streak;
+        }
+
+        function getLocalStreak(name) {
+            try {
+                return calcStreak(JSON.parse(localStorage.getItem("notah_submissions_" + name) || "[]"));
+            } catch { return 0; }
+        }
+
+        function renderStreakCard(card, streak) {
+            const msgs = { 0:"ابدأ النهارده! 💪", 1:"أول يوم، بداية النور 🕯️", 3:"٣ أيام متواصلة 🙏", 7:"أسبوع كامل! رب المجد فرحان بيك ✝️", 14:"أسبوعين! أنت بطل 🏆", 30:"شهر كامل! قديس في الطريق 👑" };
+            const closest = Object.keys(msgs).reverse().find(k => streak >= +k) || 0;
+            card.innerHTML = `
+                <div class="streak-left">
+                    <div class="streak-flame">${streak >= 1 ? "🔥" : "🕯️"}</div>
+                    <div class="streak-info">
+                        <div class="streak-count">${streak}</div>
+                        <div class="streak-label">يوم متواصل</div>
+                    </div>
+                </div>
+                <div class="streak-msg">${msgs[closest]}</div>
+            `;
+        }
+
+        // ============ SUBMIT ============
         document.getElementById("submitBtn").onclick = async () => {
             const name = document.getElementById("studentName").value.trim();
-            const date = document.getElementById("dateField").value;
-            const teacher = document.getElementById("teacherSelect").value;
-            
-            // Fixed the crash by adding optional chaining ?.
-            const gospel = document.querySelector('input[name="gospel"]:checked')?.value;
-            const confession = document.querySelector('input[name="confession"]:checked')?.value;
-            const communion = document.querySelector('input[name="communion"]:checked')?.value;
-            
-            const prayerElements = document.querySelectorAll('input[name="prayer"]:checked');
-            const prayer = Array.from(prayerElements).map(el => el.value).join(", ") || "لا يوجد";
+            const reportType = document.querySelector('input[name="reportType"]:checked')?.value || "يومي";
+            const isWeekly = reportType === "أسبوعي";
 
-            // Validation Check
-            if(!name || !date || !teacher || !gospel || !confession || !communion) {
+            // Get date(s)
+            let date = "", dateFrom = "", dateTo = "";
+            if (isWeekly) {
+                dateFrom = document.getElementById("dateFrom")?.value;
+                dateTo   = document.getElementById("dateTo")?.value;
+                if (!dateFrom || !dateTo) { alert("يا بطل، اختار تاريخ بداية ونهاية الأسبوع!"); return; }
+                date = `${dateFrom} → ${dateTo}`;
+            } else {
+                date = document.getElementById("dateField")?.value;
+                if (!date) { alert("يا بطل، اختار التاريخ!"); return; }
+            }
+
+            const teacher   = document.getElementById("teacherSelect").value;
+            const gospel    = document.querySelector('input[name="gospel"]:checked')?.value;
+            const confession= document.querySelector('input[name="confession"]:checked')?.value;
+            const communion = document.querySelector('input[name="communion"]:checked')?.value;
+            const prayer    = Array.from(document.querySelectorAll('input[name="prayer"]:checked')).map(el => el.value).join(", ") || "لا يوجد";
+
+            if (!name || !teacher || !gospel || !confession || !communion) {
                 alert("يا بطل، فيه بيانات ناقصة! تأكد من اختيار كل الخانات.");
                 return;
             }
 
             document.getElementById("overlay").classList.add("show");
-            
+
+            // Save locally for streak (use dateFrom for weekly, or date for daily)
+            localStorage.setItem("notah_student_name", name);
+            try {
+                const key = "notah_submissions_" + name;
+                const localDates = JSON.parse(localStorage.getItem(key) || "[]");
+                const saveDate = isWeekly ? dateFrom : date;
+                if (!localDates.includes(saveDate)) localDates.push(saveDate);
+                localStorage.setItem(key, JSON.stringify(localDates));
+            } catch {}
+
             const formData = new URLSearchParams();
             formData.append("name", name);
             formData.append("date", date);
-            formData.append("reportType", "Daily"); // Added default value so script doesn't fail
+            formData.append("reportType", reportType);
             formData.append("gospel", gospel);
             formData.append("confession", confession);
             formData.append("communion", communion);
@@ -113,18 +329,12 @@
             formData.append("teacher", teacher);
 
             try {
-                // Post request
                 await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: formData });
-                
-                // Success UI
                 document.getElementById("loader").classList.add("hidden");
                 document.getElementById("success").classList.remove("hidden");
                 document.getElementById("statusText").textContent = "تم بنجاح";
-                
-                setTimeout(() => {
-                    location.reload();
-                }, 2000);
-            } catch (e) { 
+                setTimeout(() => { location.reload(); }, 2000);
+            } catch (e) {
                 alert("حدث خطأ في الشبكة، حاول مرة أخرى");
                 document.getElementById("overlay").classList.remove("show");
             }
